@@ -1,6 +1,8 @@
-package com.sctdroid.app.wallpapertodo;
+package com.sctdroid.app.wallpapertodo.data;
 
 import android.text.TextUtils;
+
+import com.sctdroid.app.wallpapertodo.data.bean.Joke;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -6,12 +6,18 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.sctdroid.app.wallpapertodo.data.source.*;
+import com.sctdroid.app.wallpapertodo.data.source.JokesRepository;
+import com.sctdroid.app.wallpapertodo.data.source.local.JokesLocalDataSource;
+import com.sctdroid.app.wallpapertodo.data.source.remote.JokesRemoteDataSource;
+import com.sctdroid.app.wallpapertodo.jokes.JokeFragment;
+import com.sctdroid.app.wallpapertodo.jokes.JokePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +30,8 @@ public class TabLayoutFragment extends Fragment implements TabLayout.OnTabSelect
     private TabLayoutFragmentAdapter mAdapter;
     private int[] mTabImgs = new int[]{R.drawable.home, R.drawable.collect, R.drawable.collect, R.drawable.collect};
     private List<Fragment> mFragments = new ArrayList<>();
+    private JokePresenter mJokePresenter;
+    private JokesRepository mJokesRepository;
 
     public static TabLayoutFragment newInstance(String s) {
         TabLayoutFragment tabLayoutFragment = new TabLayoutFragment();
@@ -61,7 +69,7 @@ public class TabLayoutFragment extends Fragment implements TabLayout.OnTabSelect
 
     private void setDefaultFragment() {
         getChildFragmentManager().beginTransaction()
-                .replace(R.id.sub_content, HomeFragment.newInstance(getString(R.string.item_home)))
+                .replace(R.id.sub_content, JokeFragment.newInstance(getString(R.string.item_home)))
                 .commit();
     }
 
@@ -70,7 +78,18 @@ public class TabLayoutFragment extends Fragment implements TabLayout.OnTabSelect
      */
     public void initFragmentList() {
         mFragments.clear();
-        mFragments.add(HomeFragment.newInstance(getString(R.string.item_home)));
+        JokeFragment jokeFragment = JokeFragment.newInstance(getString(R.string.item_home));
+        // Create the presenter
+        mJokesRepository = JokesRepository.getInstance(new JokesRemoteDataSource(), new JokesLocalDataSource());
+        JokesLoader tasksLoader = new JokesLoader(getActivity(), mJokesRepository);
+        mJokePresenter = new JokePresenter(
+                tasksLoader,
+                getActivity().getSupportLoaderManager(),
+                mJokesRepository,
+                jokeFragment
+        );
+
+        mFragments.add(jokeFragment);
         mFragments.add(CollectFragment.newInstance(getString(R.string.item_collect)));
         mFragments.add(CollectFragment.newInstance(getString(R.string.item_collect)));
         mFragments.add(CollectFragment.newInstance(getString(R.string.item_collect)));

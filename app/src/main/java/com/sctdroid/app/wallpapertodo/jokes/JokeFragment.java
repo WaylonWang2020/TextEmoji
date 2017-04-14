@@ -1,4 +1,4 @@
-package com.sctdroid.app.wallpapertodo;
+package com.sctdroid.app.wallpapertodo.jokes;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.show.api.ShowApiRequest;
+import com.sctdroid.app.wallpapertodo.Constants;
+import com.sctdroid.app.wallpapertodo.R;
+import com.sctdroid.app.wallpapertodo.data.bean.Joke;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +25,24 @@ import java.util.List;
  * Created by lixindong on 4/13/17.
  */
 
-public class HomeFragment extends Fragment {
-    public static HomeFragment newInstance(String s){
-        HomeFragment homeFragment = new HomeFragment();
+public class JokeFragment extends Fragment implements JokesContract.View {
+    private JokesContract.Presenter mPresenter;
+    private SwipeRefreshLayout mRefreshLayout;
+    private RecyclerView mRecyclerView;
+    private ContentAdapter mContentAdapter;
+
+    public static JokeFragment newInstance(String s){
+        JokeFragment jokeFragment = new JokeFragment();
         Bundle bundle = new Bundle();
         bundle.putString(Constants.ARGS,s);
-        homeFragment.setArguments(bundle);
-        return homeFragment;
+        jokeFragment.setArguments(bundle);
+        return jokeFragment;
+    }
+
+    @Override
+    public void showJokes(List<Joke> jokes) {
+        mRefreshLayout.setRefreshing(false);
+        mContentAdapter.updateData(jokes);
     }
 
     @Nullable
@@ -38,43 +50,31 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sub_content, container, false);
 
-        final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        final ContentAdapter adapter = new ContentAdapter(getActivity());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
+        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mContentAdapter = new ContentAdapter(getActivity());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mContentAdapter);
 
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String appid="35563";
-                        String secret="10e933fd427b4eb58fe9b1f02963733e";
-                        final String res=new ShowApiRequest("http://route.showapi.com/341-2", appid, secret)
-                                .addTextPara("time", "")
-                                .addTextPara("page", "")
-                                .addTextPara("maxResult", "")
-                                .post();
-
-                        final List<Joke> result = new JokeParser().parse(res);
-
-                        System.out.println(res);
-                        //把返回内容通过handler对象更新到界面
-                        recyclerView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                refreshLayout.setRefreshing(false);
-                                adapter.updateData(result);
-                            }
-                        }, 1000);
-                    }
-                }).start();
+                mPresenter.loadJokes(false);
             }
         });
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
+    }
+
+    @Override
+    public void setPresenter(JokesContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     public static abstract class ViewHolder extends RecyclerView.ViewHolder {
@@ -108,11 +108,11 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected void bind(Joke joke) {
-            item_title.setText(joke.title);
-            item_content.setText(joke.text);
-            item_time.setText(joke.create_time);
+            item_title.setText(joke.getTitle());
+            item_content.setText(joke.getText());
+            item_time.setText(joke.getCreateTime());
             Glide.with(getContext())
-                    .load(joke.image)
+                    .load(joke.getImage())
                     .into(item_image);
         }
     }

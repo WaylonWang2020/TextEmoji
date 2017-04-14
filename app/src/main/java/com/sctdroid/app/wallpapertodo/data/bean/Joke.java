@@ -1,4 +1,4 @@
-package com.sctdroid.app.wallpapertodo;
+package com.sctdroid.app.wallpapertodo.data.bean;
 
 /**
  * Created by lixindong on 4/13/17.
@@ -43,5 +43,21 @@ public class Joke {
         public Joke build() {
             return new Joke(title, text, create_time, image);
         }
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public String getCreateTime() {
+        return create_time;
+    }
+
+    public String getImage() {
+        return image;
     }
 }
