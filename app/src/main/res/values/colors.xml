@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
     <color name="black_1">#414141</color>
+    <color name="joke_item_normal_title_textColor">#cc000000</color>
+    <color name="joke_item_normal_src_textColor">#80000000</color>
+    <color name="joke_item_normal_content_textColor">#cc000000</color>
 </resources>

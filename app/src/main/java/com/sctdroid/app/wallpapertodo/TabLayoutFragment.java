@@ -38,13 +38,6 @@ public class TabLayoutFragment extends Fragment implements TabLayout.OnTabSelect
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tablayout, container, false);
         mTextView = (TextView) view.findViewById(R.id.activity_text_view);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            String s = bundle.getString(Constants.ARGS);
-            if (!TextUtils.isEmpty(s)) {
-                mTextView.setText(s);
-            }
-        }
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
         mTabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
         initTabList();
@@ -57,12 +50,6 @@ public class TabLayoutFragment extends Fragment implements TabLayout.OnTabSelect
             mTabLayout.getTabAt(i).setCustomView(mAdapter.getTabView(i));
         }
         mTabLayout.addOnTabSelectedListener(this);
-//        mViewPager.setCurrentItem(0);
-//        mTabLayout.getTabAt(0).setIcon(R.drawable.home);
-//        mTabLayout.getTabAt(1).setIcon(R.drawable.location);
-//        mTabLayout.getTabAt(2).setIcon(R.drawable.like);
-//        mTabLayout.getTabAt(3).setIcon(R.drawable.person);
-//        setDefaultFragment();
         return view;
     }
 

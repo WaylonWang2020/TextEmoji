@@ -63,7 +63,7 @@ public class TabLayoutFragmentAdapter extends FragmentPagerAdapter {
         mTabIcon = (ImageView) view.findViewById(R.id.iv_tab_icon);
         mTabText.setText(mTabList.get(position));
         mTabIcon.setImageResource(mTabImgs[position]);
-        if (0 == position) {//the default color of item home is green
+        if (0 == position) {
             mTabText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             mTabIcon.setImageResource(R.drawable.home_fill);
         }
