@@ -8,4 +8,6 @@
     <color name="joke_item_normal_title_textColor">#cc000000</color>
     <color name="joke_item_normal_src_textColor">#80000000</color>
     <color name="joke_item_normal_content_textColor">#cc000000</color>
+    <color name="green">#05b40b</color>
+    <color name="white4green">#f7fdf7</color>
 </resources>

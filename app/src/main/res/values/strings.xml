@@ -5,4 +5,7 @@
     <string name="item_home">Home</string>
     <string name="item_collect">Collect</string>
     <string name="tips">tips</string>
+    <string name="string_emoji">文字表情</string>
+    <string name="send">发送</string>
+    <string name="empty_text">请输入内容</string>
 </resources>
