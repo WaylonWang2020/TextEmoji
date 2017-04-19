@@ -201,7 +201,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
     }
 
     private void scrollChatToBottom() {
-        mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+        mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 
     /**
