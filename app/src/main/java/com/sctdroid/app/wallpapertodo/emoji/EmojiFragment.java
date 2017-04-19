@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -106,6 +107,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
                         options.setVisibility(View.GONE);
                     }
                 }
+                scrollChatToBottom();
             }
         });
         mTextInputEditText.addTextChangedListener(new TextWatcher() {
@@ -132,6 +134,14 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
 
             }
         });
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mTextInputEditText.clearFocus();
+                options.setVisibility(View.GONE);
+                return false;
+            }
+        });
     }
 
     private void initRecyclerView(View root) {
@@ -151,6 +161,10 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
         right_option.setVisibility(View.GONE);
     }
 
+    private void scrollChatToBottom() {
+        mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+    }
+
     /**
      * show Chats
      * @param data
@@ -158,7 +172,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
     @Override
     public void showChats(List<ChatItem> data) {
         mAdapter.updateData(data);
-        mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount()-1);
+        scrollChatToBottom();
     }
 
     @Override
