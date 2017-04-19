@@ -1,5 +1,7 @@
 package com.sctdroid.app.wallpapertodo.data.bean;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,5 +61,11 @@ public class ChatItem {
             e.printStackTrace();
         }
         return object;
+    }
+
+    public static ChatItem fromJsonObject(@NonNull JSONObject object) {
+        String content = object.optString("content");
+        int avatarResId = object.optInt("avatarResId");
+        return new Builder().avatarResId(avatarResId).content(content).build();
     }
 }

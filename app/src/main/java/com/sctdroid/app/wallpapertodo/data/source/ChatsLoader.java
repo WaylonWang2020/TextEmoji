@@ -12,10 +12,10 @@ import java.util.List;
  * Created by lixindong on 4/14/17.
  */
 
-public class ChatsLoader extends AsyncTaskLoader<List<ChatItem>> implements ChatRepository.ChatsRepositoryObserver {
-    private final ChatRepository mRepository;
+public class ChatsLoader extends AsyncTaskLoader<List<ChatItem>> implements ChatsRepository.ChatsRepositoryObserver {
+    private final ChatsRepository mRepository;
 
-    public ChatsLoader(Context context, @NonNull ChatRepository repository) {
+    public ChatsLoader(Context context, @NonNull ChatsRepository repository) {
         super(context);
         mRepository = repository;
     }

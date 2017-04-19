@@ -5,6 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sctdroid.app.wallpapertodo.R;
+import com.sctdroid.app.wallpapertodo.data.source.ChatsRepository;
+import com.sctdroid.app.wallpapertodo.data.source.ChatsLoader;
+import com.sctdroid.app.wallpapertodo.data.source.local.ChatsLocalDataSource;
 import com.sctdroid.app.wallpapertodo.utils.ActivityUtils;
 
 /**
@@ -27,6 +30,8 @@ public class EmojiActivity extends AppCompatActivity {
                     getSupportFragmentManager(), emojiFragment, R.id.contentFrame);
         }
 
-        mEmojiPresenter = new EmojiPresenter(emojiFragment);
+        ChatsRepository repository = ChatsRepository.getInstance(new ChatsLocalDataSource(this), null);
+        ChatsLoader chatsLoader = new ChatsLoader(this, repository);
+        mEmojiPresenter = new EmojiPresenter(chatsLoader, getSupportLoaderManager(), repository, emojiFragment);
     }
 }

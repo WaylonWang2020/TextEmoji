@@ -9,22 +9,22 @@ import java.util.List;
  * Created by lixindong on 4/18/17.
  */
 
-public class ChatRepository implements ChatDataSource {
-    private static ChatRepository INSTANCE;
-    private ChatRepository mRemoteDataSource;
-    private ChatDataSource mLocalDataSource;
+public class ChatsRepository implements ChatsDataSource {
+    private static ChatsRepository INSTANCE;
+    private ChatsRepository mRemoteDataSource;
+    private ChatsDataSource mLocalDataSource;
     private List<ChatsRepositoryObserver> mObservers = new ArrayList<>();
 
 
-    public ChatRepository(ChatDataSource localDataSource, ChatRepository remoteDataSource) {
+    private ChatsRepository(ChatsDataSource localDataSource, ChatsRepository remoteDataSource) {
         mRemoteDataSource = remoteDataSource;
         mLocalDataSource = localDataSource;
     }
 
-    public static ChatRepository getInstance(ChatDataSource localDataSource,
-                                             ChatRepository remoteDataSource) {
+    public static ChatsRepository getInstance(ChatsDataSource localDataSource,
+                                              ChatsRepository remoteDataSource) {
         if (INSTANCE == null) {
-            INSTANCE = new ChatRepository(localDataSource, remoteDataSource);
+            INSTANCE = new ChatsRepository(localDataSource, remoteDataSource);
         }
         return INSTANCE;
     }

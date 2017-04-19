@@ -4,12 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.sctdroid.app.wallpapertodo.R;
 import com.sctdroid.app.wallpapertodo.data.bean.ChatItem;
 
@@ -31,6 +28,8 @@ import java.util.List;
 public class EmojiFragment extends Fragment implements EmojiContract.View {
     private ContentAdapter mAdapter;
     private EmojiContract.Presenter mPresenter;
+    private TextInputEditText mTextInputEditText;
+    private RecyclerView mRecyclerView;
 
     @Override
     public void setPresenter(EmojiContract.Presenter presenter) {
@@ -69,36 +68,22 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
 
     private void initEvent(final View root) {
         TextView sendButton = (TextView) root.findViewById(R.id.send_button);
-        final TextInputEditText textInputEditText = (TextInputEditText) root.findViewById(R.id.text_input);
+        mTextInputEditText = (TextInputEditText) root.findViewById(R.id.text_input);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputText = textInputEditText.getText().toString();
-                if (TextUtils.isEmpty(inputText)) {
-                    Toast.makeText(getActivity(), R.string.empty_text, Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    sendMsg(inputText);
-                    textInputEditText.getText().clear();
-                }
+                String inputText = mTextInputEditText.getText().toString();
+                mPresenter.processInput(inputText);
             }
         });
     }
 
-    private void sendMsg(String inputText) {
-        ChatItem item = new ChatItem.Builder()
-                .avatarResId(R.drawable.home)
-                .content(inputText)
-                .build();
-        mAdapter.appendData(item);
-    }
-
     private void initRecyclerView(View root) {
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void initHeadBar(View root) {
@@ -108,6 +93,27 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
         title.setText(R.string.string_emoji);
         left_option.setVisibility(View.GONE);
         right_option.setVisibility(View.GONE);
+    }
+
+    /**
+     * show Chats
+     * @param data
+     */
+    @Override
+    public void showChats(List<ChatItem> data) {
+        mAdapter.updateData(data);
+        mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount()-1);
+    }
+
+    @Override
+    public void showEmptyText() {
+        Toast.makeText(getActivity(), R.string.empty_text, Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void clearEditText() {
+        mTextInputEditText.getText().clear();
     }
 
     /**
