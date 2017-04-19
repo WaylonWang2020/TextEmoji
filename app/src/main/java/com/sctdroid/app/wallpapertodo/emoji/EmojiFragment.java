@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.sctdroid.app.wallpapertodo.R;
 import com.sctdroid.app.wallpapertodo.data.bean.ChatItem;
+import com.sctdroid.app.wallpapertodo.views.TextEmoji;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -244,11 +245,13 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
     static class DefaultViewHolder extends ViewHolder {
         private final TextView item_content;
         private final ImageView item_avatar;
+        private final TextEmoji item_text_emoji;
 
         public DefaultViewHolder(Context context, LayoutInflater inflater, ViewGroup parent) {
             super(context, inflater.inflate(R.layout.chat_item, parent, false));
             item_content = (TextView) itemView.findViewById(R.id.item_content);
             item_avatar = (ImageView) itemView.findViewById(R.id.item_avatar);
+            item_text_emoji = (TextEmoji) itemView.findViewById(R.id.text_emoji);
         }
 
         @Override
@@ -257,9 +260,11 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
                 return;
             }
             item_content.setText(item.content);
-            if (item.fontSize > 0) {
-                item_content.setTextSize(TypedValue.COMPLEX_UNIT_SP, item.fontSize);
+            if (item.textSize > 0) {
+                item_content.setTextSize(TypedValue.COMPLEX_UNIT_SP, item.textSize);
             }
+
+            item_text_emoji.setText(item);
 /*
             Glide.with(getContext())
                     .load(item.avatarResId)

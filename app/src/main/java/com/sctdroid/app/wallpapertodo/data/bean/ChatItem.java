@@ -12,7 +12,7 @@ import org.json.JSONObject;
 public class ChatItem {
     public final String content;
     public final int avatarResId;
-    public final int fontSize;
+    public final int textSize;
     public final boolean withShadow;
 
     public static final ChatItem NULL = new ChatItem("", -1, 0, false) {
@@ -24,10 +24,10 @@ public class ChatItem {
         }
     };
 
-    private ChatItem(String content, int avatarResId, int fontSize, boolean withShadow) {
+    private ChatItem(String content, int avatarResId, int textSize, boolean withShadow) {
         this.content = content;
         this.avatarResId = avatarResId;
-        this.fontSize = fontSize;
+        this.textSize = textSize;
         this.withShadow = withShadow;
     }
 
@@ -72,7 +72,7 @@ public class ChatItem {
         try {
             object.put("content", content);
             object.put("avatarResId", avatarResId);
-            object.put("fontSize", fontSize);
+            object.put("textSize", textSize);
             object.put("withShadow", withShadow);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -83,7 +83,7 @@ public class ChatItem {
     public static ChatItem fromJsonObject(@NonNull JSONObject object) {
         String content = object.optString("content");
         int avatarResId = object.optInt("avatarResId");
-        int fontSize = object.optInt("fontSize");
+        int fontSize = object.optInt("textSize");
         boolean withShadow = object.optBoolean("withShadow");
         return new Builder()
                 .avatarResId(avatarResId)
