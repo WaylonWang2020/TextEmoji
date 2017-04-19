@@ -6,11 +6,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,13 +72,64 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
     }
 
     private void initEvent(final View root) {
-        TextView sendButton = (TextView) root.findViewById(R.id.send_button);
+        final TextView sendButton = (TextView) root.findViewById(R.id.send_button);
+        final ImageView switchButton = (ImageView) root.findViewById(R.id.switch_button);
+        final CardView options = (CardView) root.findViewById(R.id.options);
         mTextInputEditText = (TextInputEditText) root.findViewById(R.id.text_input);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String inputText = mTextInputEditText.getText().toString();
                 mPresenter.processInput(inputText);
+            }
+        });
+        switchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (options.getVisibility() != View.VISIBLE) {
+                    imm.hideSoftInputFromWindow(mTextInputEditText.getWindowToken(), 0);
+                    options.setVisibility(View.VISIBLE);
+                    mTextInputEditText.clearFocus();
+                } else {
+                    mTextInputEditText.requestFocus();
+                    imm.showSoftInput(mTextInputEditText, InputMethodManager.SHOW_FORCED);
+                    options.setVisibility(View.GONE);
+                }
+            }
+        });
+        mTextInputEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if (options.getVisibility() == View.VISIBLE) {
+                        options.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+        mTextInputEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.getTrimmedLength(s) == 0) {
+                    // hide send button, show switch button
+                    sendButton.setVisibility(View.INVISIBLE);
+                    switchButton.setVisibility(View.VISIBLE);
+                } else {
+                    // hide switch button, show send button
+                    sendButton.setVisibility(View.VISIBLE);
+                    switchButton.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
