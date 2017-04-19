@@ -9,15 +9,19 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +40,8 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
     private EmojiContract.Presenter mPresenter;
     private TextInputEditText mTextInputEditText;
     private RecyclerView mRecyclerView;
+    private int mFontSize;
+    private boolean mWithShadow;
 
     @Override
     public void setPresenter(EmojiContract.Presenter presenter) {
@@ -81,7 +87,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
             @Override
             public void onClick(View v) {
                 String inputText = mTextInputEditText.getText().toString();
-                mPresenter.processInput(inputText);
+                mPresenter.processInput(inputText, mFontSize, mWithShadow);
             }
         });
         switchButton.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +148,38 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
                 return false;
             }
         });
+
+        SeekBar seekBar = (SeekBar) root.findViewById(R.id.font_size);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // if not select any item
+                    // save to member
+                mFontSize = progress == 0 ? 1 : progress;
+                // else
+                    // save to chat data
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        SwitchCompat switchCompat = (SwitchCompat) root.findViewById(R.id.shadow_switch);
+        mWithShadow = switchCompat.isChecked();
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mWithShadow = isChecked;
+            }
+        });
+
     }
 
     private void initRecyclerView(View root) {
@@ -167,7 +205,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
 
     /**
      * show Chats
-     * @param data
+     * @param data chat data
      */
     @Override
     public void showChats(List<ChatItem> data) {
@@ -219,6 +257,9 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
                 return;
             }
             item_content.setText(item.content);
+            if (item.fontSize > 0) {
+                item_content.setTextSize(TypedValue.COMPLEX_UNIT_SP, item.fontSize);
+            }
 /*
             Glide.with(getContext())
                     .load(item.avatarResId)

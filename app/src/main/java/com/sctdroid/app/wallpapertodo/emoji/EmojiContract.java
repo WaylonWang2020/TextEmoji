@@ -13,7 +13,7 @@ import java.util.List;
 public class EmojiContract {
     interface Presenter extends BasePresenter {
 
-        void processInput(String inputText);
+        void processInput(String inputText, int fontSize, boolean withShadow);
     }
     interface View extends BaseView<Presenter> {
 

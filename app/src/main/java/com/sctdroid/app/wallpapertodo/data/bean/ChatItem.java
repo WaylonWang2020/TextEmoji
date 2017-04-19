@@ -12,8 +12,10 @@ import org.json.JSONObject;
 public class ChatItem {
     public final String content;
     public final int avatarResId;
+    public final int fontSize;
+    public final boolean withShadow;
 
-    public static final ChatItem NULL = new ChatItem("", -1) {
+    public static final ChatItem NULL = new ChatItem("", -1, 0, false) {
         @Override public boolean equals(Object o) {
             return o == this || o == null; // API specifies this broken equals implementation
         }
@@ -22,14 +24,18 @@ public class ChatItem {
         }
     };
 
-    private ChatItem(String content, int avatarResId) {
+    private ChatItem(String content, int avatarResId, int fontSize, boolean withShadow) {
         this.content = content;
         this.avatarResId = avatarResId;
+        this.fontSize = fontSize;
+        this.withShadow = withShadow;
     }
 
     public static class Builder {
-        private int avatarResId;
+        private int avatarResId = -1;
         private String content;
+        private int fontSize = 0;
+        private boolean withShadow = false;
 
         public Builder avatarResId(int avatarResId) {
             this.avatarResId = avatarResId;
@@ -41,10 +47,19 @@ public class ChatItem {
             return this;
         }
 
-        public ChatItem build() {
-            return new ChatItem(content, avatarResId);
+        public Builder fontSize(int fontSize) {
+            this.fontSize = fontSize;
+            return this;
         }
 
+        public Builder withShadow(boolean withShadow) {
+            this.withShadow = withShadow;
+            return this;
+        }
+
+        public ChatItem build() {
+            return new ChatItem(content, avatarResId, fontSize, withShadow);
+        }
     }
 
     public String toJson() {
@@ -57,6 +72,8 @@ public class ChatItem {
         try {
             object.put("content", content);
             object.put("avatarResId", avatarResId);
+            object.put("fontSize", fontSize);
+            object.put("withShadow", withShadow);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -66,6 +83,13 @@ public class ChatItem {
     public static ChatItem fromJsonObject(@NonNull JSONObject object) {
         String content = object.optString("content");
         int avatarResId = object.optInt("avatarResId");
-        return new Builder().avatarResId(avatarResId).content(content).build();
+        int fontSize = object.optInt("fontSize");
+        boolean withShadow = object.optBoolean("withShadow");
+        return new Builder()
+                .avatarResId(avatarResId)
+                .content(content)
+                .fontSize(fontSize)
+                .withShadow(withShadow)
+                .build();
     }
 }

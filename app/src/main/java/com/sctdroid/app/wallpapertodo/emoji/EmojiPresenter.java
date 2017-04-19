@@ -52,11 +52,16 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
     }
 
     @Override
-    public void processInput(String inputText) {
+    public void processInput(String inputText, int fontSize, boolean withShadow) {
         if (TextUtils.isEmpty(inputText)) {
             mEmojiView.showEmptyText();
         } else {
-            mRepository.appendChat(new ChatItem.Builder().content(inputText).avatarResId(-1).build());
+            mRepository.appendChat(new ChatItem.Builder()
+                    .content(inputText)
+                    .avatarResId(-1)
+                    .fontSize(fontSize)
+                    .withShadow(withShadow)
+                    .build());
             mEmojiView.clearEditText();
         }
 

@@ -9,4 +9,9 @@
     <string name="send">发送</string>
     <string name="empty_text">请输入内容</string>
     <string name="font_size">字体</string>
+    <string name="text_shadow">阴影</string>
+    <string name="with_shadow">有</string>
+    <string name="without_shadow">无</string>
+    <string name="save_to_gallery">保存到相册</string>
+    <string name="send_to_friend">发送给朋友</string>
 </resources>
