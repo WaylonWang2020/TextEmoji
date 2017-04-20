@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.sctdroid.app.wallpapertodo.R;
 import com.sctdroid.app.wallpapertodo.data.bean.ChatItem;
+import com.sctdroid.app.wallpapertodo.me.MeActivity;
 import com.sctdroid.app.wallpapertodo.views.TextEmoji;
 
 import java.util.ArrayList;
@@ -184,6 +185,14 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             }
         });
 
+        // enter me
+        ImageView rightOption = (ImageView) root.findViewById(R.id.right_option);
+        rightOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), MeActivity.class));
+            }
+        });
     }
 
     private void initRecyclerView(View root) {

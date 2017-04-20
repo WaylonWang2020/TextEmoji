@@ -14,4 +14,6 @@
     <string name="without_shadow">无</string>
     <string name="save_to_gallery">保存到相册</string>
     <string name="send_to_friend">发送给朋友</string>
+    <string name="avatar">头像</string>
+    <string name="string_me">我</string>
 </resources>

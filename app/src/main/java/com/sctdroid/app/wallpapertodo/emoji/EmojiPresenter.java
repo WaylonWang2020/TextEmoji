@@ -22,7 +22,7 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
     private final EmojiContract.View mEmojiView;
     private final ChatsLoader mChatLoader;
     private final LoaderManager mLoaderManager;
-    private final int CHATS_QUERY = 1;
+    private final int CHATS_QUERY = 2;
     private final ChatsRepository mRepository;
 
     public EmojiPresenter(ChatsLoader chatsLoader, LoaderManager loaderManager, ChatsRepository repository, @NonNull EmojiContract.View emojiView) {
