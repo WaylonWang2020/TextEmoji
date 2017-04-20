@@ -1,5 +1,8 @@
 package com.sctdroid.app.wallpapertodo.emoji;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import com.sctdroid.app.wallpapertodo.BasePresenter;
 import com.sctdroid.app.wallpapertodo.BaseView;
 import com.sctdroid.app.wallpapertodo.data.bean.ChatItem;
@@ -14,6 +17,8 @@ public class EmojiContract {
     interface Presenter extends BasePresenter {
 
         void processInput(String inputText, int fontSize, boolean withShadow);
+
+        Uri saveBitmap(Bitmap bitmap, String filename);
     }
     interface View extends BaseView<Presenter> {
 

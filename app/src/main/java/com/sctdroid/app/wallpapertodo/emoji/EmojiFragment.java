@@ -1,6 +1,9 @@
 package com.sctdroid.app.wallpapertodo.emoji;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,7 +39,7 @@ import java.util.List;
  * Created by lixindong on 4/18/17.
  */
 
-public class EmojiFragment extends Fragment implements EmojiContract.View {
+public class EmojiFragment extends Fragment implements EmojiContract.View, BaseEmojiViewHolder.EventDelegate {
     private ContentAdapter mAdapter;
     private EmojiContract.Presenter mPresenter;
     private TextInputEditText mTextInputEditText;
@@ -57,7 +60,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // init adapter here
-        mAdapter = new ContentAdapter(getActivity());
+        mAdapter = new ContentAdapter(getActivity(), this);
     }
 
     @Nullable
@@ -205,6 +208,37 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
     }
 
     /**
+     *
+     * @param view
+     * @param data
+     * @return
+     */
+    @Override
+    public boolean onContentLongClicked(@NonNull View view,@NonNull Object data) {
+        if (view instanceof TextEmoji && data instanceof ChatItem) {
+            TextEmoji emojiView = (TextEmoji) view;
+            ChatItem item = (ChatItem) data;
+            Bitmap bitmap = emojiView.getBitmap();
+            String filename = item.content + System.currentTimeMillis() + ".png";
+            Uri uri = mPresenter.saveBitmap(bitmap, filename);
+            shareImage(uri);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void shareImage(Uri uri) {
+        Intent sendIntent = new Intent();
+//                    ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI");
+//                    sendIntent.setComponent(comp);
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setType("image/*");
+        sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        getContext().startActivity(sendIntent);
+    }
+
+    /**
      * show Chats
      * @param data chat data
      */
@@ -228,21 +262,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
     /**
      * Classes for RecyclerView
      */
-    public static abstract class ViewHolder extends RecyclerView.ViewHolder {
-        private Context mContext;
-        public ViewHolder(Context context, View itemView) {
-            super(itemView);
-            mContext = context;
-        }
-
-        protected abstract void bind(ChatItem chat);
-
-        protected Context getContext() {
-            return mContext;
-        }
-    }
-
-    static class DefaultViewHolder extends ViewHolder {
+    static class DefaultViewHolder extends BaseEmojiViewHolder {
         private final TextView item_content;
         private final ImageView item_avatar;
         private final TextEmoji item_text_emoji;
@@ -255,7 +275,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
         }
 
         @Override
-        protected void bind(@NonNull ChatItem item) {
+        protected void bind(@NonNull final ChatItem item) {
             if (ChatItem.NULL.equals(item)) {
                 return;
             }
@@ -265,6 +285,27 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
             }
 
             item_text_emoji.setText(item);
+
+            item_text_emoji.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mDelegate != null) {
+                        mDelegate.onContentLongClicked(v, item);
+                    } else {
+                    }
+                }
+            });
+
+            item_text_emoji.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (mDelegate != null) {
+                        return mDelegate.onContentLongClicked(v, item);
+                    } else {
+                        return false;
+                    }
+                }
+            });
 /*
             Glide.with(getContext())
                     .load(item.avatarResId)
@@ -273,26 +314,29 @@ public class EmojiFragment extends Fragment implements EmojiContract.View {
         }
     }
 
-    static class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
+    static class ContentAdapter extends RecyclerView.Adapter<BaseEmojiViewHolder> {
         private final Context mContext;
         private List<ChatItem> mData = new ArrayList<>();
+        private final BaseEmojiViewHolder.EventDelegate mDelegate;
 
-        public ContentAdapter(Context context) {
+        public ContentAdapter(Context context, BaseEmojiViewHolder.EventDelegate delegate) {
             super();
             mContext = context;
+            mDelegate = delegate;
         }
         public Context getContext() {
             return mContext;
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public BaseEmojiViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new DefaultViewHolder(getContext(), LayoutInflater.from(getContext()), parent);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(BaseEmojiViewHolder holder, int position) {
             holder.bind(getItem(position));
+            holder.setEventDelegate(mDelegate);
         }
 
         private ChatItem getItem(int position) {

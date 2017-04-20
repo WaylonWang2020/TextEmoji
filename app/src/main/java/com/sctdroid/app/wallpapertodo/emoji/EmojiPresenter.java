@@ -1,5 +1,7 @@
 package com.sctdroid.app.wallpapertodo.emoji;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
@@ -65,5 +67,10 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
             mEmojiView.clearEditText();
         }
 
+    }
+
+    @Override
+    public Uri saveBitmap(Bitmap bitmap, String filename) {
+        return StorageHelper.saveBitmap(bitmap, filename);
     }
 }

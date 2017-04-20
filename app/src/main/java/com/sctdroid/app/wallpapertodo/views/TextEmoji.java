@@ -1,6 +1,7 @@
 package com.sctdroid.app.wallpapertodo.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.sctdroid.app.wallpapertodo.data.bean.ChatItem;
+import com.sctdroid.app.wallpapertodo.utils.DisplayUtils;
 
 import java.util.Vector;
 
@@ -57,7 +59,7 @@ public class TextEmoji extends View {
         mPaint.setTextSize(DisplayUtils.dp2px(getContext(), textSize));
         mPaint.setFakeBoldText(true);
         if (mItem.withShadow) {
-            mPaint.setShadowLayer(5, 5, 5, Color.parseColor("#414141"));
+            mPaint.setShadowLayer(textSize/3, 0, 0, Color.parseColor("#999999"));
         }
         postInvalidate();
     }
@@ -136,5 +138,15 @@ public class TextEmoji extends View {
             ss.append(s+"\n");
         }
         return ss.toString();
+    }
+
+    public Bitmap getBitmap() {
+        Bitmap bitmap = Bitmap.createBitmap(DisplayUtils.dp2px(getContext(), WIDTH),
+                DisplayUtils.dp2px(getContext(), HEIGHT),
+                Bitmap.Config.ARGB_8888);
+        bitmap.setHasAlpha(true);
+        Canvas canvas = new Canvas(bitmap);
+        draw(canvas);
+        return bitmap;
     }
 }

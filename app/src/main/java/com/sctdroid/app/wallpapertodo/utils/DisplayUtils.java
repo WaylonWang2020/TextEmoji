@@ -1,4 +1,4 @@
-package com.sctdroid.app.wallpapertodo.views;
+package com.sctdroid.app.wallpapertodo.utils;
 
 import android.content.Context;
 
