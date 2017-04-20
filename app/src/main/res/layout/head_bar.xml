@@ -4,7 +4,7 @@
     android:layout_height="48dp"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    android:background="@color/black_1"
+    android:background="#37363b"
     android:gravity="center_vertical"
     >
     <ImageView
@@ -17,15 +17,17 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textColor="#ffffff"
         android:layout_centerInParent="true"
         />
     <ImageView
         android:id="@+id/right_option"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentEnd="true"
+        android:src="@drawable/me"
+        android:layout_centerVertical="true"
         />
 
 </RelativeLayout>

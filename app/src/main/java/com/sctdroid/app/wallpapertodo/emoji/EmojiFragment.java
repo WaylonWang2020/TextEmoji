@@ -200,7 +200,6 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         ImageView right_option = (ImageView) root.findViewById(R.id.right_option);
         title.setText(R.string.string_emoji);
         left_option.setVisibility(View.GONE);
-        right_option.setVisibility(View.GONE);
     }
 
     private void scrollChatToBottom() {
