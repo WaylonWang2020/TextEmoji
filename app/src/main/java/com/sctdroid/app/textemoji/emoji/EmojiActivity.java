@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.data.source.ChatsRepository;
 import com.sctdroid.app.textemoji.data.source.ChatsLoader;
+import com.sctdroid.app.textemoji.data.source.MeLoader;
+import com.sctdroid.app.textemoji.data.source.MeRepository;
 import com.sctdroid.app.textemoji.data.source.local.ChatsLocalDataSource;
+import com.sctdroid.app.textemoji.data.source.local.MeLocalDataSource;
 import com.sctdroid.app.textemoji.utils.ActivityUtils;
 
 /**
@@ -32,6 +35,8 @@ public class EmojiActivity extends AppCompatActivity {
 
         ChatsRepository repository = ChatsRepository.getInstance(new ChatsLocalDataSource(this), null);
         ChatsLoader chatsLoader = new ChatsLoader(this, repository);
-        mEmojiPresenter = new EmojiPresenter(chatsLoader, getSupportLoaderManager(), repository, emojiFragment);
+        MeRepository meRepository = MeRepository.getInstance(new MeLocalDataSource(this), null);
+        MeLoader meLoader = new MeLoader(this, meRepository);
+        mEmojiPresenter = new EmojiPresenter(meLoader, chatsLoader, getSupportLoaderManager(), repository, emojiFragment);
     }
 }

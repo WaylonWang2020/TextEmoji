@@ -7,7 +7,7 @@ import org.json.JSONObject;
  * Created by lixindong on 4/20/17.
  */
 
-public class Me {
+public class Me implements Profile {
     public static final Me NULL = new Me("") {
         @Override public boolean equals(Object o) {
             return o == this || o == null; // API specifies this broken equals implementation
@@ -21,6 +21,11 @@ public class Me {
 
     private Me(String avatar) {
         this.avatar = avatar;
+    }
+
+    @Override
+    public String getAvatar() {
+        return avatar;
     }
 
     public static class Builder {

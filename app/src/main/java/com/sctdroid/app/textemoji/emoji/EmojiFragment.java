@@ -3,6 +3,7 @@ package com.sctdroid.app.textemoji.emoji;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,9 +31,11 @@ import android.widget.Toast;
 
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.data.bean.ChatItem;
+import com.sctdroid.app.textemoji.data.bean.Me;
 import com.sctdroid.app.textemoji.me.MeActivity;
 import com.sctdroid.app.textemoji.views.TextEmoji;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -267,6 +270,11 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         mTextInputEditText.getText().clear();
     }
 
+    @Override
+    public void updateMe(Me me) {
+        mAdapter.updateProfile(me);
+    }
+
     /**
      * Classes for RecyclerView
      */
@@ -320,12 +328,24 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
                     .into(item_avatar);
 */
         }
+
+        /**
+         * tmp method to show profile
+         */
+        public void bindProfile(Me mMe) {
+//            item_avatar.setImageURI(Uri.fromFile(new File(mMe.getAvatar())));
+        }
+        public void bindAvatar(Bitmap avatar) {
+            item_avatar.setImageBitmap(avatar);
+        }
     }
 
     static class ContentAdapter extends RecyclerView.Adapter<BaseEmojiViewHolder> {
         private final Context mContext;
         private List<ChatItem> mData = new ArrayList<>();
         private final BaseEmojiViewHolder.EventDelegate mDelegate;
+        private Me mMe;
+        private Bitmap mAvatar;
 
         public ContentAdapter(Context context, BaseEmojiViewHolder.EventDelegate delegate) {
             super();
@@ -343,6 +363,10 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
 
         @Override
         public void onBindViewHolder(BaseEmojiViewHolder holder, int position) {
+            if (mMe != null && holder instanceof DefaultViewHolder) {
+                ((DefaultViewHolder) holder).bindProfile(mMe);
+                ((DefaultViewHolder) holder).bindAvatar(mAvatar);
+            }
             holder.bind(getItem(position));
             holder.setEventDelegate(mDelegate);
         }
@@ -374,6 +398,15 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
                 mData.addAll(list);
                 notifyDataSetChanged();
             }
+        }
+
+        /**
+         * tmp methods to show Me profile
+         * @param me
+         */
+        public void updateProfile(Me me) {
+            mMe = me;
+            mAvatar = BitmapFactory.decodeFile(me.getAvatar());
         }
     }
 }
