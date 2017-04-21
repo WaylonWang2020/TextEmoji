@@ -27,6 +27,7 @@
         android:layout_height="32dp"
         android:layout_alignParentEnd="true"
         android:src="@drawable/me"
+        android:tint="#fff"
         android:layout_centerVertical="true"
         />
 

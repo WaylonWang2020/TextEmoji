@@ -1,5 +1,6 @@
 package com.sctdroid.app.wallpapertodo.me;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -31,7 +32,18 @@ public class MePresenter implements MeContract.Presenter, LoaderManager.LoaderCa
 
     @Override
     public void start() {
-        mLoaderManager.initLoader(ME_QUERY, null, this);
+        mLoaderManager.initLoader(ME_QUERY, null, this).forceLoad();
+    }
+
+    @Override
+    public void updateAvatar(Bitmap bitmap) {
+        // upload bitmap
+        String avatarPath = mRepository.uploadAvatar(bitmap);
+        // update me and put
+        Me newMe = new Me.Builder()
+                .avatar(avatarPath)
+                .build();
+        mRepository.putMe(newMe);
     }
 
     @Override

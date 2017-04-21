@@ -6,4 +6,6 @@
     <dimen name="joke_item_normal_title_textSize">20sp</dimen>
     <dimen name="joke_item_normal_src_textSize">10sp</dimen>
     <dimen name="joke_item_normal_content_textSize">12sp</dimen>
+    <dimen name="avatar_width">56dp</dimen>
+    <dimen name="avatar_height">56dp</dimen>
 </resources>

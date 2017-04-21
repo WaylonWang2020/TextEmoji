@@ -53,7 +53,7 @@ public class ChatsLocalDataSource implements ChatsDataSource {
     }
 
     private String getPath() {
-        return mContext.getFilesDir().getPath() + FILENAME;
+        return mContext.getFilesDir().getPath() + "/" + FILENAME;
     }
 
     @Override

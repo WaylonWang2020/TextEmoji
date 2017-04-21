@@ -1,10 +1,12 @@
 package com.sctdroid.app.wallpapertodo.utils;
 
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,6 +16,17 @@ import java.io.IOException;
  */
 
 public class FileAccessUtils {
+    public static void writeBitmap(String path, Bitmap bitmap) {
+        File f = new File(path);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 50, fos);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
     public static void write(String path, String data) {
         if (!TextUtils.isEmpty(path)) {

@@ -1,5 +1,7 @@
 package com.sctdroid.app.wallpapertodo.data.source;
 
+import android.graphics.Bitmap;
+
 import com.sctdroid.app.wallpapertodo.data.bean.Me;
 
 /**
@@ -9,4 +11,5 @@ import com.sctdroid.app.wallpapertodo.data.bean.Me;
 public interface MeDataSource {
     Me getMe();
     void putMe(Me me);
+    String uploadAvatar(Bitmap bitmap);
 }

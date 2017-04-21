@@ -26,7 +26,7 @@ public class MeActivity extends AppCompatActivity {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), fragment, R.id.contentFrame);
         }
 
-        MeRepository repository = MeRepository.getInstance(new MeLocalDataSource(), null);
+        MeRepository repository = MeRepository.getInstance(new MeLocalDataSource(this), null);
         MeLoader loader = new MeLoader(this, repository);
         MeContract.Presenter presenter = new MePresenter(loader, getSupportLoaderManager(), repository, fragment);
     }

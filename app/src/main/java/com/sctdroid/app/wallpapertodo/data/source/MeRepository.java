@@ -1,5 +1,7 @@
 package com.sctdroid.app.wallpapertodo.data.source;
 
+import android.graphics.Bitmap;
+
 import com.sctdroid.app.wallpapertodo.data.bean.Me;
 
 import java.util.ArrayList;
@@ -37,6 +39,11 @@ public class MeRepository implements MeDataSource {
     public void putMe(Me me) {
         mLocalDataSource.putMe(me);
         notifyContentObserver();
+    }
+
+    @Override
+    public String uploadAvatar(Bitmap bitmap) {
+        return mLocalDataSource.uploadAvatar(bitmap);
     }
 
     public void addContentObserver(MeRepositoryObserver observer) {

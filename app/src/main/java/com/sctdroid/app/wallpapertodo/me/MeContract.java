@@ -1,5 +1,7 @@
 package com.sctdroid.app.wallpapertodo.me;
 
+import android.graphics.Bitmap;
+
 import com.sctdroid.app.wallpapertodo.BasePresenter;
 import com.sctdroid.app.wallpapertodo.BaseView;
 import com.sctdroid.app.wallpapertodo.data.bean.Me;
@@ -11,6 +13,7 @@ import com.sctdroid.app.wallpapertodo.data.bean.Me;
 public class MeContract {
     interface Presenter extends BasePresenter {
 
+        void updateAvatar(Bitmap bitmap);
     }
 
     interface View extends BaseView<Presenter> {
