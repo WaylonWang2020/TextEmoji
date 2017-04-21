@@ -407,6 +407,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         public void updateProfile(Me me) {
             mMe = me;
             mAvatar = BitmapFactory.decodeFile(me.getAvatar());
+            notifyDataSetChanged();
         }
     }
 }
