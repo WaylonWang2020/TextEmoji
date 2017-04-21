@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.data.bean.ChatItem;
 import com.sctdroid.app.textemoji.data.bean.Me;
+import com.sctdroid.app.textemoji.developer.DeveloperActivity;
 import com.sctdroid.app.textemoji.me.MeActivity;
 import com.sctdroid.app.textemoji.views.TextEmoji;
 
@@ -193,7 +194,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         rightOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), MeActivity.class));
+                startActivity(new Intent(getContext(), DeveloperActivity.class));
             }
         });
     }
@@ -237,6 +238,12 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         } else {
             return false;
         }
+    }
+
+    @Override
+    public boolean onAvatarClicked(View view) {
+        startActivity(new Intent(getActivity(), MeActivity.class));
+        return true;
     }
 
     private void shareImage(Uri uri) {
@@ -319,6 +326,15 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
                         return mDelegate.onContentLongClicked(v, item);
                     } else {
                         return false;
+                    }
+                }
+            });
+
+            item_avatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mDelegate != null) {
+                        mDelegate.onAvatarClicked(v);
                     }
                 }
             });

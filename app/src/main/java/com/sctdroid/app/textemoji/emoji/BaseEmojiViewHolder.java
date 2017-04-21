@@ -27,6 +27,7 @@ public abstract class BaseEmojiViewHolder extends RecyclerView.ViewHolder {
 
     public interface EventDelegate {
         boolean onContentLongClicked(View view, Object data);
+        boolean onAvatarClicked(View view);
     }
 
     public void setEventDelegate(EventDelegate delegate) {
