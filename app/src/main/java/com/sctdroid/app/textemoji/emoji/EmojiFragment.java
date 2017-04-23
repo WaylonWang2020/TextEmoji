@@ -379,7 +379,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
 
         @Override
         public void onBindViewHolder(BaseEmojiViewHolder holder, int position) {
-            if (mMe != null && holder instanceof DefaultViewHolder) {
+            if (!Me.NULL.equals(mMe) && holder instanceof DefaultViewHolder) {
                 ((DefaultViewHolder) holder).bindProfile(mMe);
                 ((DefaultViewHolder) holder).bindAvatar(mAvatar);
             }
