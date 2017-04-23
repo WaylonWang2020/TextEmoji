@@ -12,6 +12,7 @@ import com.sctdroid.app.textemoji.data.source.MeRepository;
 import com.sctdroid.app.textemoji.data.source.local.ChatsLocalDataSource;
 import com.sctdroid.app.textemoji.data.source.local.MeLocalDataSource;
 import com.sctdroid.app.textemoji.utils.ActivityUtils;
+import com.sctdroid.app.textemoji.utils.compact.Compact;
 
 /**
  * Created by lixindong on 4/18/17.
@@ -22,9 +23,17 @@ public class EmojiActivity extends AppCompatActivity {
     private EmojiPresenter mEmojiPresenter;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Compact.DestoryInstance();
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_emoji);
+
+        Compact.getInstance().init(this);
 
         EmojiFragment emojiFragment = (EmojiFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (emojiFragment == null) {

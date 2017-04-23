@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 
+import com.sctdroid.app.textemoji.utils.compact.Compact;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,6 +40,6 @@ public class StorageHelper {
             e.printStackTrace();
             return Uri.EMPTY;
         }
-        return Uri.fromFile(f);
+        return Compact.getInstance().fromFile(f);
     }
 }
