@@ -47,8 +47,14 @@ import java.util.List;
 public class EmojiFragment extends Fragment implements EmojiContract.View, BaseEmojiViewHolder.EventDelegate {
     private ContentAdapter mAdapter;
     private EmojiContract.Presenter mPresenter;
+
+    /**
+     * Views
+     */
     private TextInputEditText mTextInputEditText;
     private RecyclerView mRecyclerView;
+    private CardView mOptions;
+
     private int mFontSize;
     private boolean mWithShadow;
 
@@ -74,11 +80,16 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         View root = inflater.inflate(R.layout.fragment_emoji, container, false);
 
         // do initial things here
+        initViews(root);
         initHeadBar(root);
         initRecyclerView(root);
         initEvent(root);
 
         return root;
+    }
+
+    private void initViews(View root) {
+        mOptions = (CardView) root.findViewById(R.id.options);
     }
 
     @Override
@@ -280,6 +291,15 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
     @Override
     public void updateMe(Me me) {
         mAdapter.updateProfile(me);
+    }
+
+    public boolean onBackPressed() {
+        if (mOptions.getVisibility() == View.VISIBLE) {
+            mOptions.setVisibility(View.GONE);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

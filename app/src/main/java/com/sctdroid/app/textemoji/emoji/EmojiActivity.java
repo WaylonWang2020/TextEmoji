@@ -35,17 +35,24 @@ public class EmojiActivity extends AppCompatActivity {
 
         Compact.getInstance().init(this);
 
-        EmojiFragment emojiFragment = (EmojiFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (emojiFragment == null) {
-            emojiFragment = EmojiFragment.newInstance();
+        mEmojiFragment = (EmojiFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (mEmojiFragment == null) {
+            mEmojiFragment = EmojiFragment.newInstance();
             ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), emojiFragment, R.id.contentFrame);
+                    getSupportFragmentManager(), mEmojiFragment, R.id.contentFrame);
         }
 
         ChatsRepository repository = ChatsRepository.getInstance(new ChatsLocalDataSource(this), null);
         ChatsLoader chatsLoader = new ChatsLoader(this, repository);
         MeRepository meRepository = MeRepository.getInstance(new MeLocalDataSource(this), null);
         MeLoader meLoader = new MeLoader(this, meRepository);
-        mEmojiPresenter = new EmojiPresenter(meLoader, chatsLoader, getSupportLoaderManager(), repository, emojiFragment);
+        mEmojiPresenter = new EmojiPresenter(meLoader, chatsLoader, getSupportLoaderManager(), repository, mEmojiFragment);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!mEmojiFragment.onBackPressed()) {
+            super.onBackPressed();
+        }
     }
 }
