@@ -21,4 +21,5 @@
     <string name="github_name">AUV1107</string>
     <string name="weibo_name">斯科特不改昵称</string>
     <string name="open_source">此项目开源代码</string>
+    <string name="press_again_to_exit">再按一次退出应用</string>
 </resources>

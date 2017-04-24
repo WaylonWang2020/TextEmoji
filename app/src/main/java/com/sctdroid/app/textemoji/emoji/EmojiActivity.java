@@ -3,6 +3,7 @@ package com.sctdroid.app.textemoji.emoji;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.data.source.ChatsRepository;
@@ -12,6 +13,8 @@ import com.sctdroid.app.textemoji.data.source.MeRepository;
 import com.sctdroid.app.textemoji.data.source.local.ChatsLocalDataSource;
 import com.sctdroid.app.textemoji.data.source.local.MeLocalDataSource;
 import com.sctdroid.app.textemoji.utils.ActivityUtils;
+import com.sctdroid.app.textemoji.utils.Constants;
+import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.utils.compact.Compact;
 
 /**
@@ -26,6 +29,7 @@ public class EmojiActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Compact.DestoryInstance();
+        ToastUtils.DestoryInstance();
     }
 
     @Override
@@ -49,10 +53,28 @@ public class EmojiActivity extends AppCompatActivity {
         mEmojiPresenter = new EmojiPresenter(meLoader, chatsLoader, getSupportLoaderManager(), repository, mEmojiFragment);
     }
 
+    private long lastPressTime = 0;
+
     @Override
     public void onBackPressed() {
-        if (!mEmojiFragment.onBackPressed()) {
-            super.onBackPressed();
+        if (mEmojiFragment.onBackPressed()) {
+            return;
+        }
+        if (isFirstTimePress()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    private boolean isFirstTimePress() {
+        long current = System.currentTimeMillis();
+        long span = current - lastPressTime;
+        if (span >= Constants.EXIT_TIME_SPAN) {
+            lastPressTime = current;
+            ToastUtils.show(this, R.string.press_again_to_exit, Toast.LENGTH_SHORT);
+            return true;
+        } else {
+            return false;
         }
     }
 }
