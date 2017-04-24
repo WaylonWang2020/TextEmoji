@@ -11,10 +11,24 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        sctdroid {
+            keyAlias 'SctDroidKey'
+            keyPassword KEY_PASSWORD
+            storeFile file('../sctdroid.jks')
+            storePassword KEYSTORE_PASSWORD
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sctdroid
+        }
+        debug {
+            signingConfig signingConfigs.sctdroid
         }
     }
 }
