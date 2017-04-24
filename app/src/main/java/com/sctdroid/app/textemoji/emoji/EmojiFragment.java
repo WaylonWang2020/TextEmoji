@@ -1,6 +1,7 @@
 package com.sctdroid.app.textemoji.emoji;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -34,9 +37,9 @@ import com.sctdroid.app.textemoji.data.bean.ChatItem;
 import com.sctdroid.app.textemoji.data.bean.Me;
 import com.sctdroid.app.textemoji.developer.DeveloperActivity;
 import com.sctdroid.app.textemoji.me.MeActivity;
+import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.views.TextEmoji;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +60,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
 
     private int mFontSize;
     private boolean mWithShadow;
+    private AlertDialog mShareDialog;
 
     @Override
     public void setPresenter(EmojiContract.Presenter presenter) {
@@ -238,17 +242,42 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
      */
     @Override
     public boolean onContentLongClicked(@NonNull View view,@NonNull Object data) {
-        if (view instanceof TextEmoji && data instanceof ChatItem) {
-            TextEmoji emojiView = (TextEmoji) view;
-            ChatItem item = (ChatItem) data;
-            Bitmap bitmap = emojiView.getBitmap();
-            String filename = item.content + System.currentTimeMillis() + ".png";
-            Uri uri = mPresenter.saveBitmap(bitmap, filename);
-            shareImage(uri);
-            return true;
-        } else {
-            return false;
+        showShareDialog(view, data);
+        return true;
+    }
+
+    private void showShareDialog(@NonNull final View view, @NonNull final Object data) {
+        if (mShareDialog == null) {
+            mShareDialog = new AlertDialog.Builder(getActivity())
+                    .setItems(new String[]{
+                            getString(R.string.share_to_wechat_friends_as_emoji),
+                            getString(R.string.save_to_gallery),
+                            getString(R.string.save_to_gallery_no_alpha)},
+                            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (view instanceof TextEmoji && data instanceof ChatItem) {
+                        TextEmoji emojiView = (TextEmoji) view;
+                        ChatItem item = (ChatItem) data;
+                        String filename = item.content + System.currentTimeMillis() + ".png";
+                        Bitmap bitmap = emojiView.getBitmap(which == 0 || which == 1);
+                        String dir = which == 0 ? StorageHelper.DIR_TMP : StorageHelper.DIR_GALLERY;
+                        Uri uri = mPresenter.saveBitmap(bitmap, filename, dir);
+
+                        if (which == 0) {
+                            // share to friends
+                            shareImage(uri);
+                        } else if (which == 1 || which == 2) {
+                            // toast for saved path and notify gallery to update
+                            ToastUtils.show(getActivity(), getString(R.string.saved_toast_format, uri.getPath()), Toast.LENGTH_LONG);
+                            notifyGalleryToUpdate(uri);
+                        }
+                    }
+
+                }}).create();
+            mShareDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
+        mShareDialog.show();
     }
 
     @Override
@@ -265,6 +294,13 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         sendIntent.setType("image/*");
         sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
         getContext().startActivity(sendIntent);
+    }
+
+    private void notifyGalleryToUpdate(Uri uri) {
+        Intent intent = new Intent(
+                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(uri);
+        getActivity().sendBroadcast(intent);
     }
 
     /**

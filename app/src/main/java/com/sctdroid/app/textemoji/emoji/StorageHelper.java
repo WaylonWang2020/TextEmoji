@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 public class StorageHelper {
     public static final String ROOT = Environment.getExternalStorageDirectory() + "/TextEmoji/";
     public static final String DIR_TMP = ROOT + "tmp/";
+    public static final String DIR_GALLERY = ROOT + "gallery/";
 
 
     public static boolean checkAndMkdir(String path) {
@@ -25,12 +26,12 @@ public class StorageHelper {
         return dir.exists() || dir.mkdirs();
     }
 
-    public static Uri saveBitmap(Bitmap bitmap, String filename) {
-        if (!checkAndMkdir(DIR_TMP)) {
+    public static Uri saveBitmap(Bitmap bitmap, String filename, String DIR) {
+        if (!checkAndMkdir(DIR)) {
             return Uri.EMPTY;
         }
         // save emoji
-        File f = new File(DIR_TMP + filename);
+        File f = new File(DIR + filename);
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(f);
@@ -41,5 +42,9 @@ public class StorageHelper {
             return Uri.EMPTY;
         }
         return Compact.getInstance().fromFile(f);
+    }
+
+    public static Uri saveBitmap(Bitmap bitmap, String filename) {
+        return saveBitmap(bitmap, filename, DIR_TMP);
     }
 }

@@ -12,7 +12,8 @@
     <string name="text_shadow">阴影</string>
     <string name="with_shadow">有</string>
     <string name="without_shadow">无</string>
-    <string name="save_to_gallery">保存到相册</string>
+    <string name="save_to_gallery">保存到相册 (透明背景)</string>
+    <string name="save_to_gallery_no_alpha">保存到相册</string>
     <string name="send_to_friend">发送给朋友</string>
     <string name="avatar">头像</string>
     <string name="string_me">我</string>
@@ -22,4 +23,6 @@
     <string name="weibo_name">斯科特不改昵称</string>
     <string name="open_source">此项目开源代码</string>
     <string name="press_again_to_exit">再按一次退出应用</string>
+    <string name="share_to_wechat_friends_as_emoji">作为表情发送给微信好友</string>
+    <string name="saved_toast_format">图片已保存至 %s</string>
 </resources>

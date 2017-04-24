@@ -91,7 +91,7 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
     }
 
     @Override
-    public Uri saveBitmap(Bitmap bitmap, String filename) {
-        return StorageHelper.saveBitmap(bitmap, filename);
+    public Uri saveBitmap(Bitmap bitmap, String filename, String dirPath) {
+        return StorageHelper.saveBitmap(bitmap, filename, dirPath);
     }
 }

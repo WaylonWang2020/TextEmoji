@@ -19,7 +19,7 @@ public class EmojiContract {
 
         void processInput(String inputText, int fontSize, boolean withShadow);
 
-        Uri saveBitmap(Bitmap bitmap, String filename);
+        Uri saveBitmap(Bitmap bitmap, String filename, String dirPath);
     }
     interface View extends BaseView<Presenter> {
 
