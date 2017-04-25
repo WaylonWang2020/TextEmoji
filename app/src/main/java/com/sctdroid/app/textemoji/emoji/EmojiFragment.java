@@ -1,6 +1,5 @@
 package com.sctdroid.app.textemoji.emoji;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -260,16 +259,17 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
                 public void onClick(DialogInterface dialog, int which) {
                     if (view instanceof TextEmoji && data instanceof ChatItem) {
                         TextEmoji emojiView = (TextEmoji) view;
-                        ChatItem item = (ChatItem) data;
-                        String filename = item.content + System.currentTimeMillis() + ".png";
                         Bitmap bitmap = emojiView.getBitmap(which == 0 || which == 1);
-                        String dir = which == 0 ? StorageHelper.DIR_TMP : StorageHelper.DIR_GALLERY;
-                        Uri uri = mPresenter.saveBitmap(bitmap, filename, dir);
 
                         if (which == 0) {
                             // share to friends
-                            WeixinShareUtils.shareImage(getActivity(), uri);
+                            WeixinShareUtils.shareImage(bitmap);
                         } else if (which == 1 || which == 2) {
+                            // savg to gallery
+                            ChatItem item = (ChatItem) data;
+                            String filename = item.content + System.currentTimeMillis() + ".png";
+                            Uri uri = mPresenter.saveBitmap(bitmap, filename, StorageHelper.DIR_GALLERY);
+
                             // toast for saved path and notify gallery to update
                             ToastUtils.show(getActivity(), getString(R.string.saved_toast_format, uri.getPath()), Toast.LENGTH_LONG);
                             notifyGalleryToUpdate(uri);

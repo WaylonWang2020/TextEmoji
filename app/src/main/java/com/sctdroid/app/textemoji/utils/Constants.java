@@ -10,4 +10,6 @@ public class Constants {
     public static final String URL_OPEN_SOURCE = "https://github.com/auv1107/TextEmoji";
 
     public static final int EXIT_TIME_SPAN = 3000;
+
+    public static final String SHARE_SDK_APPID = "1d52a6fd210ce";
 }

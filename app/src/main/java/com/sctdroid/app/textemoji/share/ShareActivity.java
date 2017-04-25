@@ -1,18 +1,18 @@
 package com.sctdroid.app.textemoji.share;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sctdroid.app.textemoji.data.bean.ChatItem;
-import com.sctdroid.app.textemoji.emoji.StorageHelper;
+import com.sctdroid.app.textemoji.utils.Constants;
 import com.sctdroid.app.textemoji.utils.WeixinShareUtils;
 import com.sctdroid.app.textemoji.utils.compact.Compact;
 import com.sctdroid.app.textemoji.views.TextEmoji;
+
+import cn.sharesdk.framework.ShareSDK;
 
 /**
  * Created by lixindong on 4/25/17.
@@ -24,6 +24,7 @@ public class ShareActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Compact.getInstance().init(this);
+        ShareSDK.initSDK(this, Constants.SHARE_SDK_APPID);
 
         Intent intent = getIntent();
         if (Intent.ACTION_SEND.equals(intent.getAction())
@@ -37,12 +38,11 @@ public class ShareActivity extends AppCompatActivity {
             textEmoji.setText(item);
 
             // prepare data to share
-            String filename = item.content + System.currentTimeMillis() + ".png";
-            Bitmap bitmap = textEmoji.getBitmap(false);
+            Bitmap bitmap = textEmoji.getBitmap(true);
 
             // save and share it
-            Uri uri = StorageHelper.saveBitmap(bitmap, filename, StorageHelper.DIR_TMP);
-            WeixinShareUtils.shareImage(this, uri);
+//            Uri uri = StorageHelper.saveBitmap(bitmap, filename, StorageHelper.DIR_TMP);
+            WeixinShareUtils.shareImage(bitmap);
             finish();
         }
     }
@@ -51,5 +51,6 @@ public class ShareActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Compact.DestoryInstance();
+        ShareSDK.stopSDK();
     }
 }

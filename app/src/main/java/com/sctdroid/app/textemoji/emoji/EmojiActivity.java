@@ -17,6 +17,8 @@ import com.sctdroid.app.textemoji.utils.Constants;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.utils.compact.Compact;
 
+import cn.sharesdk.framework.ShareSDK;
+
 /**
  * Created by lixindong on 4/18/17.
  */
@@ -30,6 +32,7 @@ public class EmojiActivity extends AppCompatActivity {
         super.onDestroy();
         Compact.DestoryInstance();
         ToastUtils.DestoryInstance();
+        ShareSDK.stopSDK();
     }
 
     @Override
@@ -38,6 +41,7 @@ public class EmojiActivity extends AppCompatActivity {
         setContentView(R.layout.layout_emoji);
 
         Compact.getInstance().init(this);
+        ShareSDK.initSDK(this, Constants.SHARE_SDK_APPID);
 
         mEmojiFragment = (EmojiFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (mEmojiFragment == null) {
