@@ -1,5 +1,6 @@
 package com.sctdroid.app.textemoji.emoji;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +39,7 @@ import com.sctdroid.app.textemoji.data.bean.Me;
 import com.sctdroid.app.textemoji.developer.DeveloperActivity;
 import com.sctdroid.app.textemoji.me.MeActivity;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
+import com.sctdroid.app.textemoji.utils.WeixinShareUtils;
 import com.sctdroid.app.textemoji.views.TextEmoji;
 
 import java.util.ArrayList;
@@ -266,7 +268,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
 
                         if (which == 0) {
                             // share to friends
-                            shareImage(uri);
+                            WeixinShareUtils.shareImage(getActivity(), uri);
                         } else if (which == 1 || which == 2) {
                             // toast for saved path and notify gallery to update
                             ToastUtils.show(getActivity(), getString(R.string.saved_toast_format, uri.getPath()), Toast.LENGTH_LONG);
@@ -284,16 +286,6 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
     public boolean onAvatarClicked(View view) {
         startActivity(new Intent(getActivity(), MeActivity.class));
         return true;
-    }
-
-    private void shareImage(Uri uri) {
-        Intent sendIntent = new Intent();
-//                    ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI");
-//                    sendIntent.setComponent(comp);
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.setType("image/*");
-        sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        getContext().startActivity(sendIntent);
     }
 
     private void notifyGalleryToUpdate(Uri uri) {
