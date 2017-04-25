@@ -15,8 +15,6 @@ import android.view.View;
 import com.sctdroid.app.textemoji.data.bean.ChatItem;
 import com.sctdroid.app.textemoji.utils.DisplayUtils;
 
-import java.util.Vector;
-
 /**
  * Created by lixindong on 4/19/17.
  */
@@ -27,6 +25,7 @@ public class TextEmoji extends View {
     public static final int DEFAULT_TEXT_SIZE = 20;
     private ChatItem mItem;
     private TextPaint mPaint;
+    private StaticLayout mStaticLayout;
 
     public TextEmoji(Context context) {
         this(context, null);
@@ -47,7 +46,9 @@ public class TextEmoji extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawLinesText(canvas, mItem.content);
+        if (mStaticLayout != null) {
+            drawLinesText(canvas);
+        }
     }
 
     public void setText(ChatItem item) {
@@ -58,57 +59,15 @@ public class TextEmoji extends View {
         }
         mPaint.setTextSize(DisplayUtils.dp2px(getContext(), textSize));
         mPaint.setFakeBoldText(true);
+        mPaint.setTextAlign(Paint.Align.CENTER);
+
         if (mItem.withShadow) {
-            mPaint.setShadowLayer(textSize/3, 0, 0, Color.parseColor("#999999"));
+            mPaint.setShadowLayer(textSize/2, 0, 0, Color.parseColor("#ffffff"));
         }
+        mStaticLayout = new StaticLayout(mItem.content, mPaint, DisplayUtils.dp2px(getContext(), WIDTH), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F,true);
         postInvalidate();
     }
 
-    /**
-     * 将文字拆分成每一行放到Vector里
-     */
-    public Vector getTextLinesVector(TextPaint paint, String content, float maxHeight,
-                                     float maxWidth) {
-        Vector mString = new Vector<>();
-        int mRealLine = 0;// 字符串真实的行数
-        char ch;
-        int w = 0;
-        int istart = 0;
-        float mFontHeight = getFontHeight(paint);
-        int mMaxLinesNum = (int)(maxHeight / mFontHeight);//显示的最大行数
-        int count = content.length();
-        for (int i = 0; i < count; i++) {
-            ch = content.charAt(i);
-            float[] widths = new float[1];
-            String str = String.valueOf(ch);
-            paint.getTextWidths(str, widths);
-            if (ch == '\n') {
-                mRealLine++;// 真实的行数加一
-                mString.addElement(content.substring(istart, i));
-                istart = i + 1;
-                w = 0;
-            } else {
-                w += (int) Math.ceil(widths[0]);
-                if (w > maxWidth) {
-                    mRealLine++;// 真实的行数加一
-                    mString.addElement(content.substring(istart, i));
-                    istart = i;
-                    i--;
-                    w = 0;
-                } else {
-                    if (i == count - 1) {
-                        mRealLine++;// 真实的行数加一
-                        mString.addElement(content.substring(istart, count));
-                    }
-                }
-            }
-            //当真实行数大于显示的最大行数时跳出循环
-            if(mRealLine == mMaxLinesNum){
-                break;
-            }
-        }
-        return mString;
-    }
     /**
      *得到文字的高度
      */
@@ -117,27 +76,13 @@ public class TextEmoji extends View {
         return fm.bottom - fm.top;
     }
 
-    private void drawLinesText(Canvas canvas, String text) {
-        Rect rect = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
+    private void drawLinesText(Canvas canvas) {
+        Rect rect = canvas.getClipBounds();
 
-        //获得自动换行后的文字
-        Vector vector = getTextLinesVector(mPaint, text, rect.height(), rect.width());
-        text = vectorToString(vector);
-        //文字自动换行
-        StaticLayout layout = new StaticLayout(text,mPaint, rect.width(), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F,true);
         canvas.save();
-        mPaint.setTextAlign(Paint.Align.CENTER);
-        //文字的位置
-        canvas.translate(rect.left + rect.width()/2, rect.top+ (rect.height()  - getFontHeight(mPaint)*vector.size())/2);
-        layout.draw(canvas);
+        canvas.translate(rect.left + rect.width()/2, rect.top+ (rect.height()  - getFontHeight(mPaint) * mStaticLayout.getLineCount())/2);
+        mStaticLayout.draw(canvas);
         canvas.restore();
-    }
-    private String vectorToString(Vector strs) {
-        StringBuffer ss = new StringBuffer();
-        for (Object s : strs) {
-            ss.append(s+"\n");
-        }
-        return ss.toString();
     }
 
     public Bitmap getBitmap(boolean isAlpha) {
