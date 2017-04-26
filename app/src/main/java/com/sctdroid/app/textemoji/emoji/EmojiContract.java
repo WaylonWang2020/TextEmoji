@@ -17,7 +17,7 @@ import java.util.List;
 public class EmojiContract {
     interface Presenter extends BasePresenter {
 
-        void processInput(String inputText, int fontSize, boolean withShadow);
+        void processInput(String inputText, int textSize, boolean withShadow);
 
         Uri saveBitmap(Bitmap bitmap, String filename, String dirPath);
     }

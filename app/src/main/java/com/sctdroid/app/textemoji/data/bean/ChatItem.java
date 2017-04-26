@@ -34,7 +34,7 @@ public class ChatItem {
     public static class Builder {
         private int avatarResId = -1;
         private String content;
-        private int fontSize = 0;
+        private int textSize = 0;
         private boolean withShadow = false;
 
         public Builder avatarResId(int avatarResId) {
@@ -47,8 +47,8 @@ public class ChatItem {
             return this;
         }
 
-        public Builder fontSize(int fontSize) {
-            this.fontSize = fontSize;
+        public Builder textSize(int textSize) {
+            this.textSize = textSize;
             return this;
         }
 
@@ -58,7 +58,7 @@ public class ChatItem {
         }
 
         public ChatItem build() {
-            return new ChatItem(content, avatarResId, fontSize, withShadow);
+            return new ChatItem(content, avatarResId, textSize, withShadow);
         }
     }
 
@@ -83,12 +83,12 @@ public class ChatItem {
     public static ChatItem fromJsonObject(@NonNull JSONObject object) {
         String content = object.optString("content");
         int avatarResId = object.optInt("avatarResId");
-        int fontSize = object.optInt("textSize");
+        int textSize = object.optInt("textSize");
         boolean withShadow = object.optBoolean("withShadow");
         return new Builder()
                 .avatarResId(avatarResId)
                 .content(content)
-                .fontSize(fontSize)
+                .textSize(textSize)
                 .withShadow(withShadow)
                 .build();
     }

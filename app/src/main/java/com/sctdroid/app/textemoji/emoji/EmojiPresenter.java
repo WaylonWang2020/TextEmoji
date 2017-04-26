@@ -75,14 +75,14 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
     }
 
     @Override
-    public void processInput(String inputText, int fontSize, boolean withShadow) {
+    public void processInput(String inputText, int textSize, boolean withShadow) {
         if (TextUtils.isEmpty(inputText)) {
             mEmojiView.showEmptyText();
         } else {
             mRepository.appendChat(new ChatItem.Builder()
                     .content(inputText)
                     .avatarResId(-1)
-                    .fontSize(fontSize)
+                    .textSize(textSize)
                     .withShadow(withShadow)
                     .build());
             mEmojiView.clearEditText();

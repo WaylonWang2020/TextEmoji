@@ -12,4 +12,5 @@
     <dimen name="logo_width">40dp</dimen>
     <dimen name="developer_avatar_height">72dp</dimen>
     <dimen name="developer_avatar_width">72dp</dimen>
+    <integer name="option_default_textSize">20</integer>
 </resources>

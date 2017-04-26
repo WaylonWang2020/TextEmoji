@@ -38,6 +38,7 @@ import com.sctdroid.app.textemoji.data.bean.Me;
 import com.sctdroid.app.textemoji.developer.DeveloperActivity;
 import com.sctdroid.app.textemoji.me.MeActivity;
 import com.sctdroid.app.textemoji.utils.Constants;
+import com.sctdroid.app.textemoji.utils.OptionUtils;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.utils.WeixinShareUtils;
@@ -61,7 +62,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
     private RecyclerView mRecyclerView;
     private CardView mOptions;
 
-    private int mFontSize;
+    private int mTextSize;
     private boolean mWithShadow;
     private AlertDialog mShareDialog;
 
@@ -91,18 +92,30 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         initHeadBar(root);
         initRecyclerView(root);
         initEvent(root);
+        initOptions(root);
 
         return root;
-    }
-
-    private void initViews(View root) {
-        mOptions = (CardView) root.findViewById(R.id.options);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mPresenter.start();
+    }
+
+    private void initOptions(View root) {
+        mWithShadow = OptionUtils.withShadow(getActivity(), false);
+        mTextSize = OptionUtils.textSize(getActivity(), getResources().getInteger(R.integer.option_default_textSize));
+
+        SwitchCompat switchCompat = (SwitchCompat) root.findViewById(R.id.shadow_switch);
+        switchCompat.setChecked(mWithShadow);
+
+        SeekBar seekBar = (SeekBar) root.findViewById(R.id.text_size);
+        seekBar.setProgress(mTextSize);
+    }
+
+    private void initViews(View root) {
+        mOptions = (CardView) root.findViewById(R.id.options);
     }
 
     private void initEvent(final View root) {
@@ -114,7 +127,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             @Override
             public void onClick(View v) {
                 String inputText = mTextInputEditText.getText().toString();
-                mPresenter.processInput(inputText, mFontSize, mWithShadow);
+                mPresenter.processInput(inputText, mTextSize, mWithShadow);
                 if (!TextUtils.isEmpty(inputText)) {
                     TCAgentUtils.TextInput(getActivity(), inputText);
                 }
@@ -181,13 +194,14 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             }
         });
 
-        SeekBar seekBar = (SeekBar) root.findViewById(R.id.font_size);
+        SeekBar seekBar = (SeekBar) root.findViewById(R.id.text_size);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mFontSize = progress == 0 ? 1 : progress;
+                mTextSize = progress == 0 ? 1 : progress;
 
-                TCAgentUtils.UpdateTextSize(getActivity(), mFontSize);
+                OptionUtils.applyTextSize(getActivity(), mTextSize);
+                TCAgentUtils.UpdateTextSize(getActivity(), mTextSize);
             }
 
             @Override
@@ -202,12 +216,13 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         });
 
         SwitchCompat switchCompat = (SwitchCompat) root.findViewById(R.id.shadow_switch);
-        mWithShadow = switchCompat.isChecked();
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mWithShadow = isChecked;
-                TCAgentUtils.SwitchShadow(getActivity(), isChecked);
+
+                OptionUtils.applyWithShadow(getActivity(), mWithShadow);
+                TCAgentUtils.SwitchShadow(getActivity(), mWithShadow);
             }
         });
 
