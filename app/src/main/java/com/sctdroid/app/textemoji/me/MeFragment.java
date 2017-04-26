@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.data.bean.Me;
+import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 
 import java.io.File;
 
@@ -93,6 +94,7 @@ public class MeFragment extends Fragment implements MeContract.View {
                 mPresenter.updateAvatar(bitmap);
             }
         }
+        TCAgentUtils.UpdateAvatar(getActivity(), resultCode == RESULT_OK);
     }
 
     /**

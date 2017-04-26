@@ -8,10 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.sctdroid.app.textemoji.data.bean.ChatItem;
 import com.sctdroid.app.textemoji.utils.Constants;
+import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.WeixinShareUtils;
 import com.sctdroid.app.textemoji.utils.compact.Compact;
 import com.sctdroid.app.textemoji.views.TextEmoji;
-import com.tendcloud.tenddata.TCAgent;
 
 import cn.sharesdk.framework.ShareSDK;
 
@@ -26,7 +26,7 @@ public class ShareActivity extends AppCompatActivity {
 
         Compact.getInstance().init(this);
         ShareSDK.initSDK(this, Constants.SHARE_SDK_APPID);
-        TCAgent.onPageStart(this, ShareActivity.class.getSimpleName());
+        TCAgentUtils.onPageStart(this, ShareActivity.class.getSimpleName());
 
         Intent intent = getIntent();
         if (Intent.ACTION_SEND.equals(intent.getAction())
@@ -44,6 +44,7 @@ public class ShareActivity extends AppCompatActivity {
 
             // save and share it
 //            Uri uri = StorageHelper.saveBitmap(bitmap, filename, StorageHelper.DIR_TMP);
+            TCAgentUtils.Share(this, Constants.LABEL_FROM_SHARE, item.content);
             WeixinShareUtils.shareImage(bitmap);
             finish();
         }
@@ -54,6 +55,6 @@ public class ShareActivity extends AppCompatActivity {
         super.onDestroy();
         Compact.DestoryInstance();
         ShareSDK.stopSDK();
-        TCAgent.onPageEnd(this, ShareActivity.class.getSimpleName());
+        TCAgentUtils.onPageEnd(this, ShareActivity.class.getSimpleName());
     }
 }

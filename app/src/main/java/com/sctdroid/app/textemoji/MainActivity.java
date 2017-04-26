@@ -19,7 +19,7 @@ import com.sctdroid.app.textemoji.data.source.local.JokesLocalDataSource;
 import com.sctdroid.app.textemoji.data.source.remote.JokesRemoteDataSource;
 import com.sctdroid.app.textemoji.jokes.JokeFragment;
 import com.sctdroid.app.textemoji.jokes.JokePresenter;
-import com.tendcloud.tenddata.TCAgent;
+import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,13 +55,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
         mTabLayout.addOnTabSelectedListener(this);
 
-        TCAgent.onPageStart(this, MainActivity.class.getSimpleName());
+        TCAgentUtils.onPageStart(this, MainActivity.class.getSimpleName());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        TCAgent.onPageEnd(this, MainActivity.class.getSimpleName());
+        TCAgentUtils.onPageEnd(this, MainActivity.class.getSimpleName());
     }
 
     @Override

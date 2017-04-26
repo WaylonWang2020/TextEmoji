@@ -37,6 +37,8 @@ import com.sctdroid.app.textemoji.data.bean.ChatItem;
 import com.sctdroid.app.textemoji.data.bean.Me;
 import com.sctdroid.app.textemoji.developer.DeveloperActivity;
 import com.sctdroid.app.textemoji.me.MeActivity;
+import com.sctdroid.app.textemoji.utils.Constants;
+import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.utils.WeixinShareUtils;
 import com.sctdroid.app.textemoji.views.TextEmoji;
@@ -113,6 +115,9 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             public void onClick(View v) {
                 String inputText = mTextInputEditText.getText().toString();
                 mPresenter.processInput(inputText, mFontSize, mWithShadow);
+                if (!TextUtils.isEmpty(inputText)) {
+                    TCAgentUtils.TextInput(getActivity(), inputText);
+                }
             }
         });
         switchButton.setOnClickListener(new View.OnClickListener() {
@@ -123,10 +128,12 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
                     imm.hideSoftInputFromWindow(mTextInputEditText.getWindowToken(), 0);
                     options.setVisibility(View.VISIBLE);
                     mTextInputEditText.clearFocus();
+                    TCAgentUtils.OptionClicked(getActivity(), Constants.LABEL_OPTION_SHOW);
                 } else {
                     mTextInputEditText.requestFocus();
                     imm.showSoftInput(mTextInputEditText, InputMethodManager.SHOW_FORCED);
                     options.setVisibility(View.GONE);
+                    TCAgentUtils.OptionClicked(getActivity(), Constants.LABEL_OPTION_HIDE);
                 }
             }
         });
@@ -178,11 +185,9 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // if not select any item
-                    // save to member
                 mFontSize = progress == 0 ? 1 : progress;
-                // else
-                    // save to chat data
+
+                TCAgentUtils.UpdateTextSize(getActivity(), mFontSize);
             }
 
             @Override
@@ -202,6 +207,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mWithShadow = isChecked;
+                TCAgentUtils.SwitchShadow(getActivity(), isChecked);
             }
         });
 
@@ -260,19 +266,22 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
                     if (view instanceof TextEmoji && data instanceof ChatItem) {
                         TextEmoji emojiView = (TextEmoji) view;
                         Bitmap bitmap = emojiView.getBitmap(which == 0 || which == 1);
+                        ChatItem item = (ChatItem) data;
 
                         if (which == 0) {
                             // share to friends
                             WeixinShareUtils.shareImage(bitmap);
+                            TCAgentUtils.Share(getActivity(), Constants.LABEL_FROM_EMOJI, item.content);
                         } else if (which == 1 || which == 2) {
                             // savg to gallery
-                            ChatItem item = (ChatItem) data;
                             String filename = item.content + System.currentTimeMillis() + ".png";
                             Uri uri = mPresenter.saveBitmap(bitmap, filename, StorageHelper.DIR_GALLERY);
 
                             // toast for saved path and notify gallery to update
                             ToastUtils.show(getActivity(), getString(R.string.saved_toast_format, uri.getPath()), Toast.LENGTH_LONG);
                             notifyGalleryToUpdate(uri);
+
+                            TCAgentUtils.SaveToGallery(getActivity(), which == 1, item.content);
                         }
                     }
 

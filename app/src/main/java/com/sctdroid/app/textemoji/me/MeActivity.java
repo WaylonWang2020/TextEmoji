@@ -9,7 +9,7 @@ import com.sctdroid.app.textemoji.data.source.MeLoader;
 import com.sctdroid.app.textemoji.data.source.MeRepository;
 import com.sctdroid.app.textemoji.data.source.local.MeLocalDataSource;
 import com.sctdroid.app.textemoji.utils.ActivityUtils;
-import com.tendcloud.tenddata.TCAgent;
+import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 
 /**
  * Created by lixindong on 4/20/17.
@@ -19,7 +19,7 @@ public class MeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        TCAgent.onPageEnd(this, MeActivity.class.getSimpleName());
+        TCAgentUtils.onPageEnd(this, MeActivity.class.getSimpleName());
     }
 
     @Override
@@ -38,6 +38,6 @@ public class MeActivity extends AppCompatActivity {
         MeContract.Presenter presenter = new MePresenter(loader, getSupportLoaderManager(), repository, fragment);
 
 
-        TCAgent.onPageStart(this, MeActivity.class.getSimpleName());
+        TCAgentUtils.onPageStart(this, MeActivity.class.getSimpleName());
     }
 }
