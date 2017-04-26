@@ -65,7 +65,6 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
 
     private int mTextSize;
     private boolean mWithShadow;
-    private AlertDialog mShareDialog;
 
     @Override
     public void setPresenter(EmojiContract.Presenter presenter) {
@@ -270,41 +269,39 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
     }
 
     private void showShareDialog(@NonNull final View view, @NonNull final Object data) {
-        if (mShareDialog == null) {
-            mShareDialog = new AlertDialog.Builder(getActivity())
-                    .setItems(new String[]{
-                            getString(R.string.share_to_wechat_friends_as_emoji),
-                            getString(R.string.save_to_gallery),
-                            getString(R.string.save_to_gallery_no_alpha)},
-                            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (view instanceof TextEmoji && data instanceof ChatItem) {
-                        TextEmoji emojiView = (TextEmoji) view;
-                        Bitmap bitmap = emojiView.getBitmap(which == 0 || which == 1);
-                        ChatItem item = (ChatItem) data;
+        AlertDialog shareDialog = new AlertDialog.Builder(getActivity())
+                .setItems(new String[]{
+                        getString(R.string.share_to_wechat_friends_as_emoji),
+                        getString(R.string.save_to_gallery),
+                        getString(R.string.save_to_gallery_no_alpha)},
+                        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (view instanceof TextEmoji && data instanceof ChatItem) {
+                    TextEmoji emojiView = (TextEmoji) view;
+                    Bitmap bitmap = emojiView.getBitmap(which == 0 || which == 1);
+                    ChatItem item = (ChatItem) data;
 
-                        if (which == 0) {
-                            // share to friends
-                            WeixinShareUtils.shareImage(bitmap);
-                            TCAgentUtils.Share(getActivity(), Constants.LABEL_FROM_EMOJI, item.content);
-                        } else if (which == 1 || which == 2) {
-                            // savg to gallery
-                            String filename = EncoderUtils.encodeSHA1(item.content + System.currentTimeMillis()) + ".png";
-                            Uri uri = mPresenter.saveBitmap(bitmap, filename, StorageHelper.DIR_GALLERY);
+                    if (which == 0) {
+                        // share to friends
+                        WeixinShareUtils.shareImage(bitmap);
+                        TCAgentUtils.Share(getActivity(), Constants.LABEL_FROM_EMOJI, item.content);
+                    } else if (which == 1 || which == 2) {
+                        // savg to gallery
+                        String filename = EncoderUtils.encodeSHA1(item.content + System.currentTimeMillis()) + ".png";
+                        Uri uri = mPresenter.saveBitmap(bitmap, filename, StorageHelper.DIR_GALLERY);
 
-                            // toast for saved path and notify gallery to update
-                            ToastUtils.show(getActivity(), getString(R.string.saved_toast_format, uri.getPath()), Toast.LENGTH_LONG);
-                            notifyGalleryToUpdate(uri);
+                        // toast for saved path and notify gallery to update
+                        ToastUtils.show(getActivity(), getString(R.string.saved_toast_format, uri.getPath()), Toast.LENGTH_LONG);
+                        notifyGalleryToUpdate(uri);
 
-                            TCAgentUtils.SaveToGallery(getActivity(), which == 1, item.content);
-                        }
+                        TCAgentUtils.SaveToGallery(getActivity(), which == 1, item.content);
                     }
+                }
 
-                }}).create();
-            mShareDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        }
-        mShareDialog.show();
+            }}).create();
+        shareDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        shareDialog.show();
     }
 
     @Override
