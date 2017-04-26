@@ -38,6 +38,7 @@ import com.sctdroid.app.textemoji.data.bean.Me;
 import com.sctdroid.app.textemoji.developer.DeveloperActivity;
 import com.sctdroid.app.textemoji.me.MeActivity;
 import com.sctdroid.app.textemoji.utils.Constants;
+import com.sctdroid.app.textemoji.utils.EncoderUtils;
 import com.sctdroid.app.textemoji.utils.OptionUtils;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
@@ -289,7 +290,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
                             TCAgentUtils.Share(getActivity(), Constants.LABEL_FROM_EMOJI, item.content);
                         } else if (which == 1 || which == 2) {
                             // savg to gallery
-                            String filename = item.content + System.currentTimeMillis() + ".png";
+                            String filename = EncoderUtils.encodeSHA1(item.content + System.currentTimeMillis()) + ".png";
                             Uri uri = mPresenter.saveBitmap(bitmap, filename, StorageHelper.DIR_GALLERY);
 
                             // toast for saved path and notify gallery to update
