@@ -14,5 +14,6 @@ public class TextEmojiApplication extends Application {
         TCAgent.init(this);
         // 如果已经在AndroidManifest.xml配置了App ID和渠道ID，调用TCAgent.init(this)即可；或与AndroidManifest.xml中的对应参数保持一致。
         TCAgent.setReportUncaughtExceptions(true);
+        TCAgent.setAntiCheatingEnabled(this, true);
     }
 }

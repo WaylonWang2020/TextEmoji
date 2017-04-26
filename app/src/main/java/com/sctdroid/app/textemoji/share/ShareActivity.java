@@ -11,6 +11,7 @@ import com.sctdroid.app.textemoji.utils.Constants;
 import com.sctdroid.app.textemoji.utils.WeixinShareUtils;
 import com.sctdroid.app.textemoji.utils.compact.Compact;
 import com.sctdroid.app.textemoji.views.TextEmoji;
+import com.tendcloud.tenddata.TCAgent;
 
 import cn.sharesdk.framework.ShareSDK;
 
@@ -25,6 +26,7 @@ public class ShareActivity extends AppCompatActivity {
 
         Compact.getInstance().init(this);
         ShareSDK.initSDK(this, Constants.SHARE_SDK_APPID);
+        TCAgent.onPageStart(this, ShareActivity.class.getSimpleName());
 
         Intent intent = getIntent();
         if (Intent.ACTION_SEND.equals(intent.getAction())
@@ -52,5 +54,6 @@ public class ShareActivity extends AppCompatActivity {
         super.onDestroy();
         Compact.DestoryInstance();
         ShareSDK.stopSDK();
+        TCAgent.onPageEnd(this, ShareActivity.class.getSimpleName());
     }
 }

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.utils.ActivityUtils;
+import com.tendcloud.tenddata.TCAgent;
 
 /**
  * Created by lixindong on 4/21/17.
@@ -22,5 +23,12 @@ public class DeveloperActivity extends AppCompatActivity {
             fragment = DeveloperFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), fragment, R.id.contentFrame);
         }
+        TCAgent.onPageStart(this, DeveloperActivity.class.getSimpleName());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        TCAgent.onPageEnd(this, DeveloperActivity.class.getSimpleName());
     }
 }

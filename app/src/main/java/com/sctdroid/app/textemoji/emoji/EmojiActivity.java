@@ -16,6 +16,7 @@ import com.sctdroid.app.textemoji.utils.ActivityUtils;
 import com.sctdroid.app.textemoji.utils.Constants;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.utils.compact.Compact;
+import com.tendcloud.tenddata.TCAgent;
 
 import cn.sharesdk.framework.ShareSDK;
 
@@ -33,6 +34,7 @@ public class EmojiActivity extends AppCompatActivity {
         Compact.DestoryInstance();
         ToastUtils.DestoryInstance();
         ShareSDK.stopSDK();
+        TCAgent.onPageEnd(this, EmojiActivity.class.getSimpleName());
     }
 
     @Override
@@ -42,6 +44,7 @@ public class EmojiActivity extends AppCompatActivity {
 
         Compact.getInstance().init(this);
         ShareSDK.initSDK(this, Constants.SHARE_SDK_APPID);
+        TCAgent.onPageStart(this, EmojiActivity.class.getSimpleName());
 
         mEmojiFragment = (EmojiFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (mEmojiFragment == null) {
