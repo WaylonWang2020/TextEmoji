@@ -31,6 +31,17 @@ android {
             signingConfig signingConfigs.sctdroid
         }
     }
+
+    productFlavors {
+        yingyongbao {}
+        _360 {}
+        chuizi {}
+        wandoujia {}
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [Your_channel_id: name]
+    }
 }
 
 dependencies {
