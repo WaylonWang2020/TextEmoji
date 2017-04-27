@@ -28,6 +28,7 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
     private final int ME_QUERY = 3;
     private final ChatsRepository mRepository;
     private final MeLoader mMeLoader;
+    private boolean mIsFirstTimeStart = false;
 
     public EmojiPresenter(MeLoader meLoader, ChatsLoader chatsLoader, LoaderManager loaderManager, ChatsRepository repository, @NonNull EmojiContract.View emojiView) {
         mMeLoader = meLoader;
@@ -67,6 +68,9 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<List<ChatItem>> loader, List<ChatItem> data) {
         mEmojiView.showChats(data);
+        if (mIsFirstTimeStart) {
+            mEmojiView.scrollToTop();
+        }
     }
 
     @Override
@@ -93,5 +97,9 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
     @Override
     public Uri saveBitmap(Bitmap bitmap, String filename, String dirPath) {
         return StorageHelper.saveBitmap(bitmap, filename, dirPath);
+    }
+
+    public void isFirstTime(boolean isFirstTimeStart) {
+        mIsFirstTimeStart = isFirstTimeStart;
     }
 }

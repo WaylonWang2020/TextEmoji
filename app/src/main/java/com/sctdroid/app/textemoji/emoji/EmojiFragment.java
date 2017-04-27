@@ -19,6 +19,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -39,7 +40,7 @@ import com.sctdroid.app.textemoji.developer.DeveloperActivity;
 import com.sctdroid.app.textemoji.me.MeActivity;
 import com.sctdroid.app.textemoji.utils.Constants;
 import com.sctdroid.app.textemoji.utils.EncoderUtils;
-import com.sctdroid.app.textemoji.utils.OptionUtils;
+import com.sctdroid.app.textemoji.utils.SharePreferencesUtils;
 import com.sctdroid.app.textemoji.utils.SingleFileScanner;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
@@ -106,8 +107,8 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
     }
 
     private void initOptions(View root) {
-        mWithShadow = OptionUtils.withShadow(getActivity(), false);
-        mTextSize = OptionUtils.textSize(getActivity(), getResources().getInteger(R.integer.option_default_textSize));
+        mWithShadow = SharePreferencesUtils.withShadow(getActivity(), false);
+        mTextSize = SharePreferencesUtils.textSize(getActivity(), getResources().getInteger(R.integer.option_default_textSize));
 
         SwitchCompat switchCompat = (SwitchCompat) root.findViewById(R.id.shadow_switch);
         switchCompat.setChecked(mWithShadow);
@@ -130,6 +131,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             public void onClick(View v) {
                 String inputText = mTextInputEditText.getText().toString();
                 mPresenter.processInput(inputText, mTextSize, mWithShadow);
+                Log.i("emojitext", inputText);
                 if (!TextUtils.isEmpty(inputText)) {
                     TCAgentUtils.TextInput(getActivity(), inputText);
                 }
@@ -202,7 +204,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mTextSize = progress == 0 ? 1 : progress;
 
-                OptionUtils.applyTextSize(getActivity(), mTextSize);
+                SharePreferencesUtils.applyTextSize(getActivity(), mTextSize);
                 TCAgentUtils.UpdateTextSize(getActivity(), mTextSize);
             }
 
@@ -223,7 +225,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mWithShadow = isChecked;
 
-                OptionUtils.applyWithShadow(getActivity(), mWithShadow);
+                SharePreferencesUtils.applyWithShadow(getActivity(), mWithShadow);
                 TCAgentUtils.SwitchShadow(getActivity(), mWithShadow);
             }
         });
@@ -337,6 +339,11 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
     public void showChats(List<ChatItem> data) {
         mAdapter.updateData(data);
         scrollChatToBottom();
+    }
+
+    @Override
+    public void scrollToTop() {
+        mRecyclerView.scrollToPosition(0);
     }
 
     @Override

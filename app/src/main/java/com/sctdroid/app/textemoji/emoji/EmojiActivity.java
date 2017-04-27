@@ -14,6 +14,7 @@ import com.sctdroid.app.textemoji.data.source.local.ChatsLocalDataSource;
 import com.sctdroid.app.textemoji.data.source.local.MeLocalDataSource;
 import com.sctdroid.app.textemoji.utils.ActivityUtils;
 import com.sctdroid.app.textemoji.utils.Constants;
+import com.sctdroid.app.textemoji.utils.SharePreferencesUtils;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.utils.compact.Compact;
@@ -46,6 +47,9 @@ public class EmojiActivity extends AppCompatActivity {
         ShareSDK.initSDK(this, Constants.SHARE_SDK_APPID);
         TCAgentUtils.onPageStart(this, EmojiActivity.class.getSimpleName());
 
+        boolean isFirstTimeStart = SharePreferencesUtils.isFirstTimeStart(this);
+        SharePreferencesUtils.applyFirstTimeStart(this, false);
+
         mEmojiFragment = (EmojiFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (mEmojiFragment == null) {
             mEmojiFragment = EmojiFragment.newInstance();
@@ -58,6 +62,7 @@ public class EmojiActivity extends AppCompatActivity {
         MeRepository meRepository = MeRepository.getInstance(new MeLocalDataSource(this), null);
         MeLoader meLoader = new MeLoader(this, meRepository);
         mEmojiPresenter = new EmojiPresenter(meLoader, chatsLoader, getSupportLoaderManager(), repository, mEmojiFragment);
+        mEmojiPresenter.isFirstTime(isFirstTimeStart);
     }
 
     private long lastPressTime = 0;

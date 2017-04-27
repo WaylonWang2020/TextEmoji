@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.data.bean.ChatItem;
 import com.sctdroid.app.textemoji.utils.Constants;
-import com.sctdroid.app.textemoji.utils.OptionUtils;
+import com.sctdroid.app.textemoji.utils.SharePreferencesUtils;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.WeixinShareUtils;
 import com.sctdroid.app.textemoji.utils.compact.Compact;
@@ -35,8 +35,8 @@ public class ShareActivity extends AppCompatActivity {
                 && "text/plain".equals(intent.getType())) {
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-            boolean withShadow = OptionUtils.withShadow(this, false);
-            int textSize = OptionUtils.textSize(this, getResources().getInteger(R.integer.option_default_textSize));
+            boolean withShadow = SharePreferencesUtils.withShadow(this, false);
+            int textSize = SharePreferencesUtils.textSize(this, getResources().getInteger(R.integer.option_default_textSize));
 
             // prepare to generate data
             ChatItem item = new ChatItem.Builder()

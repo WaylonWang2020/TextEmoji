@@ -30,5 +30,7 @@ public class EmojiContract {
         void clearEditText();
 
         void updateMe(Me me);
+
+        void scrollToTop();
     }
 }
