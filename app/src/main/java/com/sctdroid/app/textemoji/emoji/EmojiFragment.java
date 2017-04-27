@@ -40,6 +40,7 @@ import com.sctdroid.app.textemoji.me.MeActivity;
 import com.sctdroid.app.textemoji.utils.Constants;
 import com.sctdroid.app.textemoji.utils.EncoderUtils;
 import com.sctdroid.app.textemoji.utils.OptionUtils;
+import com.sctdroid.app.textemoji.utils.SingleFileScanner;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.utils.WeixinShareUtils;
@@ -65,6 +66,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
 
     private int mTextSize;
     private boolean mWithShadow;
+    private SingleFileScanner mScanner;
 
     @Override
     public void setPresenter(EmojiContract.Presenter presenter) {
@@ -289,11 +291,12 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
                     } else if (which == 1 || which == 2) {
                         // savg to gallery
                         String filename = EncoderUtils.encodeSHA1(item.content + System.currentTimeMillis()) + ".png";
-                        Uri uri = mPresenter.saveBitmap(bitmap, filename, StorageHelper.DIR_GALLERY);
+                        String absolutePath = StorageHelper.DIR_GALLERY + filename;
+                        mPresenter.saveBitmap(bitmap, filename, StorageHelper.DIR_GALLERY);
 
                         // toast for saved path and notify gallery to update
-                        ToastUtils.show(getActivity(), getString(R.string.saved_toast_format, uri.getPath()), Toast.LENGTH_LONG);
-                        notifyGalleryToUpdate(uri);
+                        ToastUtils.show(getActivity(), getString(R.string.saved_toast_format, absolutePath), Toast.LENGTH_LONG);
+                        scanPhoto(absolutePath);
 
                         TCAgentUtils.SaveToGallery(getActivity(), which == 1, item.content);
                     }
@@ -310,12 +313,21 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         return true;
     }
 
+    // This method is deprecated as it is not working on Android N
     private void notifyGalleryToUpdate(Uri uri) {
         Intent intent = new Intent(
                 Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(uri);
         getActivity().sendBroadcast(intent);
     }
+
+    public void scanPhoto(final String imageFileName) {
+        if (mScanner == null) {
+            mScanner = new SingleFileScanner(getActivity().getApplicationContext());
+        }
+        mScanner.scan(imageFileName);
+    }
+
 
     /**
      * show Chats

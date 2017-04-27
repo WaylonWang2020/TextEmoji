@@ -21,6 +21,7 @@
         <activity
             android:name="com.sctdroid.app.textemoji.emoji.EmojiActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +30,10 @@
             </intent-filter>
         </activity>
         <activity android:name="com.sctdroid.app.textemoji.me.MeActivity"
+            android:parentActivityName=".emoji.EmojiActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.sctdroid.app.textemoji.developer.DeveloperActivity"
+            android:parentActivityName=".emoji.EmojiActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.sctdroid.app.textemoji.share.ShareActivity"
             android:theme="@style/AppTheme.NoActionBar">
