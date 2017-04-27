@@ -19,7 +19,6 @@ import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -69,6 +68,10 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
     private boolean mWithShadow;
     private SingleFileScanner mScanner;
 
+    private int mMinTextSize;
+    private int mDefaultTextSize;
+    private int mSpanPerSegment;
+
     @Override
     public void setPresenter(EmojiContract.Presenter presenter) {
         mPresenter = presenter;
@@ -91,6 +94,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         View root = inflater.inflate(R.layout.fragment_emoji, container, false);
 
         // do initial things here
+        initValues();
         initViews(root);
         initHeadBar(root);
         initRecyclerView(root);
@@ -106,15 +110,21 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         mPresenter.start();
     }
 
+    private void initValues() {
+        mMinTextSize = getResources().getInteger(R.integer.min_textSize);
+        mSpanPerSegment = getResources().getInteger(R.integer.span_per_segment);
+        mDefaultTextSize = getResources().getInteger(R.integer.option_default_textSize);
+    }
+
     private void initOptions(View root) {
         mWithShadow = SharePreferencesUtils.withShadow(getActivity(), false);
-        mTextSize = SharePreferencesUtils.textSize(getActivity(), getResources().getInteger(R.integer.option_default_textSize));
+        mTextSize = SharePreferencesUtils.textSize(getActivity(), mDefaultTextSize);
 
         SwitchCompat switchCompat = (SwitchCompat) root.findViewById(R.id.shadow_switch);
         switchCompat.setChecked(mWithShadow);
 
         SeekBar seekBar = (SeekBar) root.findViewById(R.id.text_size);
-        seekBar.setProgress(mTextSize);
+        seekBar.setProgress((mTextSize - mMinTextSize) / mSpanPerSegment);
     }
 
     private void initViews(View root) {
@@ -131,7 +141,6 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             public void onClick(View v) {
                 String inputText = mTextInputEditText.getText().toString();
                 mPresenter.processInput(inputText, mTextSize, mWithShadow);
-                Log.i("emojitext", inputText);
                 if (!TextUtils.isEmpty(inputText)) {
                     TCAgentUtils.TextInput(getActivity(), inputText);
                 }
@@ -202,7 +211,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mTextSize = progress == 0 ? 1 : progress;
+                mTextSize = progress * mSpanPerSegment + mMinTextSize;
 
                 SharePreferencesUtils.applyTextSize(getActivity(), mTextSize);
                 TCAgentUtils.UpdateTextSize(getActivity(), mTextSize);

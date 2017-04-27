@@ -34,7 +34,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:max="60"
+                android:max="@integer/max_progress"
                 android:progress="@integer/option_default_textSize"
                 />
         </RelativeLayout>
