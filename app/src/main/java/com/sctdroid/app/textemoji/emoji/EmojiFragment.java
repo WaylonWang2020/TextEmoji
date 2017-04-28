@@ -28,12 +28,14 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.data.bean.ChatItem;
+import com.sctdroid.app.textemoji.data.bean.EmojiCategory;
 import com.sctdroid.app.textemoji.data.bean.Me;
 import com.sctdroid.app.textemoji.developer.DeveloperActivity;
 import com.sctdroid.app.textemoji.me.MeActivity;
@@ -44,7 +46,9 @@ import com.sctdroid.app.textemoji.utils.SingleFileScanner;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.utils.WeixinShareUtils;
+import com.sctdroid.app.textemoji.views.EmojiTager;
 import com.sctdroid.app.textemoji.views.TextEmoji;
+import com.sctdroid.app.textemoji.views.adaptableviews.RadioAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,11 +67,14 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
     private TextInputEditText mTextInputEditText;
     private RecyclerView mRecyclerView;
     private CardView mOptions;
+    private EmojiTager mEmojiTager;
+    private EmojiRadioAdapter mEmojiRadioAdapter;
+    private EmojiPagerAdapter mEmojiPagerAdapter;
 
     private int mTextSize;
+
     private boolean mWithShadow;
     private SingleFileScanner mScanner;
-
     private int mMinTextSize;
     private int mDefaultTextSize;
     private int mSpanPerSegment;
@@ -129,6 +136,11 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
 
     private void initViews(View root) {
         mOptions = (CardView) root.findViewById(R.id.options);
+        mEmojiTager = (EmojiTager) root.findViewById(R.id.emoji_tager);
+        mEmojiRadioAdapter = new EmojiRadioAdapter(getActivity());
+        mEmojiPagerAdapter = new EmojiPagerAdapter(getActivity());
+        mEmojiTager.setRadioGroupAdapter(mEmojiRadioAdapter);
+        mEmojiTager.setViewPagerAdapter(mEmojiPagerAdapter);
     }
 
     private void initEvent(final View root) {
@@ -369,6 +381,12 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
     @Override
     public void updateMe(Me me) {
         mAdapter.updateProfile(me);
+    }
+
+    @Override
+    public void initEmojiBoard(List<EmojiCategory> data) {
+        mEmojiRadioAdapter.updateData(data);
+        mEmojiPagerAdapter.updateData(data);
     }
 
     public boolean onBackPressed() {

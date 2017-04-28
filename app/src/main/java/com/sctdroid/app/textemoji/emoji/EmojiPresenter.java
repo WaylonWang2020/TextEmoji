@@ -9,9 +9,11 @@ import android.support.v4.content.Loader;
 import android.text.TextUtils;
 
 import com.sctdroid.app.textemoji.data.bean.ChatItem;
+import com.sctdroid.app.textemoji.data.bean.EmojiCategory;
 import com.sctdroid.app.textemoji.data.bean.Me;
 import com.sctdroid.app.textemoji.data.source.ChatsLoader;
 import com.sctdroid.app.textemoji.data.source.ChatsRepository;
+import com.sctdroid.app.textemoji.data.source.EmojiLoader;
 import com.sctdroid.app.textemoji.data.source.MeLoader;
 
 import java.util.List;
@@ -26,11 +28,14 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
     private final LoaderManager mLoaderManager;
     private final int CHATS_QUERY = 2;
     private final int ME_QUERY = 3;
+    private final int EMOJI_QUERY = 4;
     private final ChatsRepository mRepository;
     private final MeLoader mMeLoader;
+    private final EmojiLoader mEmojiLoader;
     private boolean mIsFirstTimeStart = false;
 
-    public EmojiPresenter(MeLoader meLoader, ChatsLoader chatsLoader, LoaderManager loaderManager, ChatsRepository repository, @NonNull EmojiContract.View emojiView) {
+    public EmojiPresenter(EmojiLoader emojiLoader, MeLoader meLoader, ChatsLoader chatsLoader, LoaderManager loaderManager, ChatsRepository repository, @NonNull EmojiContract.View emojiView) {
+        mEmojiLoader = emojiLoader;
         mMeLoader = meLoader;
         mChatLoader = chatsLoader;
         mLoaderManager = loaderManager;
@@ -55,6 +60,22 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
 
             @Override
             public void onLoaderReset(Loader<Me> loader) {
+
+            }
+        }).forceLoad();
+        mLoaderManager.initLoader(EMOJI_QUERY, null, new LoaderManager.LoaderCallbacks<List<EmojiCategory>>() {
+            @Override
+            public Loader<List<EmojiCategory>> onCreateLoader(int id, Bundle args) {
+                return mEmojiLoader;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<List<EmojiCategory>> loader, List<EmojiCategory> data) {
+                mEmojiView.initEmojiBoard(data);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<List<EmojiCategory>> loader) {
 
             }
         }).forceLoad();

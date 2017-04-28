@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.sctdroid.app.textemoji.BasePresenter;
 import com.sctdroid.app.textemoji.BaseView;
 import com.sctdroid.app.textemoji.data.bean.ChatItem;
+import com.sctdroid.app.textemoji.data.bean.EmojiCategory;
 import com.sctdroid.app.textemoji.data.bean.Me;
 
 import java.util.List;
@@ -32,5 +33,7 @@ public class EmojiContract {
         void updateMe(Me me);
 
         void scrollToTop();
+
+        void initEmojiBoard(List<EmojiCategory> data);
     }
 }

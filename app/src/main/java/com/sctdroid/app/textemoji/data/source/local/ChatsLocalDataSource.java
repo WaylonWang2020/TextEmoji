@@ -1,22 +1,18 @@
 package com.sctdroid.app.textemoji.data.source.local;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.sctdroid.app.textemoji.data.bean.ChatItem;
 import com.sctdroid.app.textemoji.data.source.ChatsDataSource;
+import com.sctdroid.app.textemoji.utils.AssetUtils;
 import com.sctdroid.app.textemoji.utils.FileAccessUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +36,7 @@ public class ChatsLocalDataSource implements ChatsDataSource {
         // get data
         String data = FileAccessUtils.read(getPath());
         if (TextUtils.isEmpty(data)) {
-            data = readAssertResource(mContext, DEFAULT_CHAT_HISTORY_FILENAME);
+            data = AssetUtils.readAssertResource(mContext, DEFAULT_CHAT_HISTORY_FILENAME);
         }
         // to array
         // parse
@@ -91,40 +87,4 @@ public class ChatsLocalDataSource implements ChatsDataSource {
         // save items
         saveChats(items);
     }
-
-    private String readAssertResource(Context context, String strAssertFileName) {
-        AssetManager assetManager = context.getAssets();
-        String strResponse = "";
-        try {
-            InputStream ims = assetManager.open(strAssertFileName);
-            strResponse = getStringFromInputStream(ims);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return strResponse;
-    }
-
-    private String getStringFromInputStream(InputStream inputStream) {
-        BufferedReader br = null;
-        StringBuilder builder = new StringBuilder();
-        String line;
-        try {
-            br = new BufferedReader(new InputStreamReader(inputStream));
-            while ((line = br.readLine()) != null) {
-                builder.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return builder.toString();
-    }
-
 }

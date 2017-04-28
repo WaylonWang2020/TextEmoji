@@ -62,4 +62,10 @@
     </RelativeLayout>
 
     <include layout="@layout/layout_emoji_options" />
+
+    <com.sctdroid.app.textemoji.views.EmojiTager
+        android:id="@+id/emoji_tager"
+        android:layout_width="match_parent"
+        android:layout_height="256dp" />
+
 </LinearLayout>

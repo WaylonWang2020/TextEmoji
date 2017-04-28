@@ -8,9 +8,12 @@ import android.widget.Toast;
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.data.source.ChatsRepository;
 import com.sctdroid.app.textemoji.data.source.ChatsLoader;
+import com.sctdroid.app.textemoji.data.source.EmojiLoader;
+import com.sctdroid.app.textemoji.data.source.EmojiRepository;
 import com.sctdroid.app.textemoji.data.source.MeLoader;
 import com.sctdroid.app.textemoji.data.source.MeRepository;
 import com.sctdroid.app.textemoji.data.source.local.ChatsLocalDataSource;
+import com.sctdroid.app.textemoji.data.source.local.EmojiLocalDataSource;
 import com.sctdroid.app.textemoji.data.source.local.MeLocalDataSource;
 import com.sctdroid.app.textemoji.utils.ActivityUtils;
 import com.sctdroid.app.textemoji.utils.Constants;
@@ -61,7 +64,9 @@ public class EmojiActivity extends AppCompatActivity {
         ChatsLoader chatsLoader = new ChatsLoader(this, repository);
         MeRepository meRepository = MeRepository.getInstance(new MeLocalDataSource(this), null);
         MeLoader meLoader = new MeLoader(this, meRepository);
-        mEmojiPresenter = new EmojiPresenter(meLoader, chatsLoader, getSupportLoaderManager(), repository, mEmojiFragment);
+        EmojiRepository emojiRepository = EmojiRepository.getInstance(new EmojiLocalDataSource(this), null);
+        EmojiLoader emojiLoader = new EmojiLoader(this, emojiRepository);
+        mEmojiPresenter = new EmojiPresenter(emojiLoader, meLoader, chatsLoader, getSupportLoaderManager(), repository, mEmojiFragment);
         mEmojiPresenter.isFirstTime(isFirstTimeStart);
     }
 
