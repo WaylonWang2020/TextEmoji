@@ -26,6 +26,11 @@ public class WallpaperPresenter implements WallpaperContract.Presenter {
     }
 
     @Override
+    public void create() {
+
+    }
+
+    @Override
     public void start() {
         loadWallpaper();
     }

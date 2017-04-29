@@ -18,6 +18,8 @@ package com.sctdroid.app.textemoji;
 
 public interface BasePresenter {
 
+    void create();
+
     void start();
 
 }

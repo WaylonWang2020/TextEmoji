@@ -45,8 +45,7 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
     }
 
     @Override
-    public void start() {
-        mLoaderManager.initLoader(CHATS_QUERY, null, this).forceLoad();
+    public void create() {
         mLoaderManager.initLoader(ME_QUERY, null, new LoaderManager.LoaderCallbacks<Me>() {
             @Override
             public Loader<Me> onCreateLoader(int id, Bundle args) {
@@ -79,6 +78,11 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
 
             }
         }).forceLoad();
+    }
+
+    @Override
+    public void start() {
+        mLoaderManager.initLoader(CHATS_QUERY, null, this).forceLoad();
     }
 
     @Override

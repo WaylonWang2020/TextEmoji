@@ -31,6 +31,11 @@ public class MePresenter implements MeContract.Presenter, LoaderManager.LoaderCa
     }
 
     @Override
+    public void create() {
+
+    }
+
+    @Override
     public void start() {
         mLoaderManager.initLoader(ME_QUERY, null, this).forceLoad();
     }

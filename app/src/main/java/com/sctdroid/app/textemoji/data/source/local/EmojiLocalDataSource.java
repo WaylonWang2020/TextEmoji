@@ -42,7 +42,9 @@ public class EmojiLocalDataSource implements EmojiDataSource {
                 result = new ArrayList<>();
                 for (int i = 0; i < array.length(); i++) {
                     EmojiCategory category = EmojiCategory.fromJson(array.optJSONObject(i));
-                    result.add(category);
+                    if (!category.isEmpty()) {
+                        result.add(category);
+                    }
                 }
             }
         } catch (JSONException e) {

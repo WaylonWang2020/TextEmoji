@@ -108,6 +108,8 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         initEvent(root);
         initOptions(root);
 
+        mPresenter.create();
+
         return root;
     }
 

@@ -39,6 +39,11 @@ public class JokePresenter implements JokesContract.Presenter, LoaderManager.Loa
     }
 
     @Override
+    public void create() {
+
+    }
+
+    @Override
     public void start() {
         mLoaderManager.initLoader(JOKES_QUERY, null, this).forceLoad();
     }

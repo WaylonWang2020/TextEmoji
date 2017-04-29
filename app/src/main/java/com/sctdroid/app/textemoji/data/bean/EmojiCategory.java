@@ -63,6 +63,10 @@ public class EmojiCategory {
         }
     }
 
+    public boolean isEmpty() {
+        return Collections.EMPTY_LIST.equals(data) || data.isEmpty();
+    }
+
     public String toJson() {
         return toJsonObject().toString();
     }
