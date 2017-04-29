@@ -37,6 +37,7 @@ android {
         _360 {}
         chuizi {}
         wandoujia {}
+        mi {}
     }
 
     productFlavors.all {
