@@ -37,7 +37,9 @@
             android:parentActivityName=".emoji.EmojiActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.sctdroid.app.textemoji.share.ShareActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/build_emoji_and_share"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
