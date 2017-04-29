@@ -46,22 +46,6 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
 
     @Override
     public void create() {
-        mLoaderManager.initLoader(ME_QUERY, null, new LoaderManager.LoaderCallbacks<Me>() {
-            @Override
-            public Loader<Me> onCreateLoader(int id, Bundle args) {
-                return mMeLoader;
-            }
-
-            @Override
-            public void onLoadFinished(Loader<Me> loader, Me data) {
-                mEmojiView.updateMe(data);
-            }
-
-            @Override
-            public void onLoaderReset(Loader<Me> loader) {
-
-            }
-        }).forceLoad();
         mLoaderManager.initLoader(EMOJI_QUERY, null, new LoaderManager.LoaderCallbacks<List<EmojiCategory>>() {
             @Override
             public Loader<List<EmojiCategory>> onCreateLoader(int id, Bundle args) {
@@ -83,6 +67,22 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
     @Override
     public void start() {
         mLoaderManager.initLoader(CHATS_QUERY, null, this).forceLoad();
+        mLoaderManager.initLoader(ME_QUERY, null, new LoaderManager.LoaderCallbacks<Me>() {
+            @Override
+            public Loader<Me> onCreateLoader(int id, Bundle args) {
+                return mMeLoader;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Me> loader, Me data) {
+                mEmojiView.updateMe(data);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Me> loader) {
+
+            }
+        }).forceLoad();
     }
 
     @Override
