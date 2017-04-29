@@ -57,6 +57,10 @@ public class EmojiCategoryView extends FrameLayout {
         mAdapter.updateData(category.data);
     }
 
+    public void setOnItemClickListener(ContentAdapter.OnItemClickListener listener) {
+        mAdapter.setOnItemClickListener(listener);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final Context mContext;
         private final TextView item_emoji;
@@ -79,6 +83,8 @@ public class EmojiCategoryView extends FrameLayout {
         private final Context mContext;
         private List<Emoji> mData = new ArrayList<>();
 
+        private OnItemClickListener mOnItemClickListener;
+
         public ContentAdapter(Context context) {
             super();
             mContext = context;
@@ -90,8 +96,17 @@ public class EmojiCategoryView extends FrameLayout {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.bind(getItem(position));
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+            final Emoji emoji = getItem(position);
+            holder.bind(emoji);
+            if (mOnItemClickListener != null) {
+                holder.itemView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mOnItemClickListener.onItemClicked(v, emoji);
+                    }
+                });
+            }
         }
 
         @Override
@@ -109,6 +124,14 @@ public class EmojiCategoryView extends FrameLayout {
                 mData.addAll(data);
             }
             notifyDataSetChanged();
+        }
+
+        public void setOnItemClickListener(OnItemClickListener listener) {
+            mOnItemClickListener = listener;
+        }
+
+        public interface OnItemClickListener {
+            void onItemClicked(View view, Emoji emoji);
         }
     }
 }

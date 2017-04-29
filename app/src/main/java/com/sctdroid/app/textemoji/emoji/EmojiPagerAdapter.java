@@ -24,6 +24,7 @@ public class EmojiPagerAdapter extends PagerAdapter {
 
     private List<EmojiCategory> mData = new ArrayList<>();
     private Map<String, EmojiCategoryView> mCachedView = new HashMap<>();
+    private EmojiCategoryView.ContentAdapter.OnItemClickListener mOnItemClickListener;
 
     public EmojiPagerAdapter(Context context) {
         super();
@@ -48,6 +49,7 @@ public class EmojiPagerAdapter extends PagerAdapter {
         } else {
             categoryView = new EmojiCategoryView(mContext);
         }
+        categoryView.setOnItemClickListener(mOnItemClickListener);
         categoryView.bind(category);
         container.addView(categoryView);
         return categoryView;
@@ -75,5 +77,9 @@ public class EmojiPagerAdapter extends PagerAdapter {
             mData.addAll(data);
         }
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(EmojiCategoryView.ContentAdapter.OnItemClickListener listener) {
+        mOnItemClickListener = listener;
     }
 }

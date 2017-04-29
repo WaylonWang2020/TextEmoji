@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.data.bean.ChatItem;
+import com.sctdroid.app.textemoji.data.bean.Emoji;
 import com.sctdroid.app.textemoji.data.bean.EmojiCategory;
 import com.sctdroid.app.textemoji.data.bean.Me;
 import com.sctdroid.app.textemoji.developer.DeveloperActivity;
@@ -47,6 +48,7 @@ import com.sctdroid.app.textemoji.utils.SoftKeyboardUtils;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.utils.WeixinShareUtils;
+import com.sctdroid.app.textemoji.views.EmojiCategoryView;
 import com.sctdroid.app.textemoji.views.EmojiTager;
 import com.sctdroid.app.textemoji.views.TextEmoji;
 import com.sctdroid.app.textemoji.views.adaptableviews.RadioAdapter;
@@ -199,8 +201,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    if (mOptions.getVisibility() == View.VISIBLE ||
-                            mEmojiTager.getVisibility() == View.VISIBLE) {
+                    if (mOptions.getVisibility() == View.VISIBLE) {
                         optionShowType(OPTION_TYPE_KEYBOARD);
                     }
                 }
@@ -229,6 +230,15 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+        mTextInputEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mEmojiTager.getVisibility() == View.VISIBLE) {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mTextInputEditText.getWindowToken(), 0);
+                }
             }
         });
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
@@ -277,6 +287,15 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), DeveloperActivity.class));
+            }
+        });
+
+        mEmojiPagerAdapter.setOnItemClickListener(new EmojiCategoryView.ContentAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(View view, Emoji emoji) {
+                int index = mTextInputEditText.getSelectionStart();
+                Editable editable = mTextInputEditText.getText();
+                editable.insert(index, emoji.emoji);
             }
         });
     }
