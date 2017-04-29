@@ -3,13 +3,13 @@ package com.sctdroid.app.textemoji.views;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sctdroid.app.textemoji.R;
@@ -24,7 +24,7 @@ import java.util.List;
  * Created by lixindong on 4/28/17.
  */
 
-public class EmojiCategoryView extends FrameLayout {
+public class EmojiCategoryView extends RelativeLayout {
     public EmojiCategoryView(Context context) {
         this(context, null);
     }
@@ -39,6 +39,8 @@ public class EmojiCategoryView extends FrameLayout {
     }
 
     private ContentAdapter mAdapter;
+    private ImageView mDeleteButton;
+
     void init() {
         inflate(getContext(), R.layout.recycler_view, this);
 
@@ -51,6 +53,8 @@ public class EmojiCategoryView extends FrameLayout {
 
         mAdapter = new ContentAdapter(getContext());
         recyclerView.setAdapter(mAdapter);
+
+        mDeleteButton = (ImageView) findViewById(R.id.delete_button);
     }
 
     public void bind(EmojiCategory category) {
@@ -59,6 +63,15 @@ public class EmojiCategoryView extends FrameLayout {
 
     public void setOnItemClickListener(ContentAdapter.OnItemClickListener listener) {
         mAdapter.setOnItemClickListener(listener);
+    }
+
+    public void setOnDeleteClickListener(final OnClickListener listener) {
+        mDeleteButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDeleteButton.setOnClickListener(listener);
+            }
+        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -122,6 +135,9 @@ public class EmojiCategoryView extends FrameLayout {
             mData.clear();
             if (!Collections.EMPTY_LIST.equals(data)) {
                 mData.addAll(data);
+                if (mData.size() >= 7) {
+                    mData.add(6, Emoji.NULL);
+                }
             }
             notifyDataSetChanged();
         }

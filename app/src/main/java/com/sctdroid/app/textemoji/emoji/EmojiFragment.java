@@ -41,6 +41,7 @@ import com.sctdroid.app.textemoji.data.bean.Me;
 import com.sctdroid.app.textemoji.developer.DeveloperActivity;
 import com.sctdroid.app.textemoji.me.MeActivity;
 import com.sctdroid.app.textemoji.utils.Constants;
+import com.sctdroid.app.textemoji.utils.EmojiUtils;
 import com.sctdroid.app.textemoji.utils.EncoderUtils;
 import com.sctdroid.app.textemoji.utils.SharePreferencesUtils;
 import com.sctdroid.app.textemoji.utils.SingleFileScanner;
@@ -296,6 +297,24 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
                 int index = mTextInputEditText.getSelectionStart();
                 Editable editable = mTextInputEditText.getText();
                 editable.insert(index, emoji.emoji);
+            }
+        });
+
+        mEmojiPagerAdapter.setOnDeleteClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index = mTextInputEditText.getSelectionStart();
+                if (index > 0) {
+                    Editable editable = mTextInputEditText.getText();
+                    int length = 1;
+                    if (index > 1) {
+                        String text = editable.toString().substring(index-2,index);
+                        if (EmojiUtils.isEmoji(text)) {
+                            length = 2;
+                        }
+                    }
+                    editable.delete(index - length, index);
+                }
             }
         });
     }
