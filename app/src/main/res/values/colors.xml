@@ -9,6 +9,7 @@
     <color name="joke_item_normal_src_textColor">#80000000</color>
     <color name="joke_item_normal_content_textColor">#cc000000</color>
     <color name="green">#05b40b</color>
+    <color name="dark_green">#009905</color>
     <color name="white4green">#f7fdf7</color>
     <color name="light_grey">#33a4a4a4</color>
 </resources>
