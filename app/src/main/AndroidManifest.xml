@@ -52,6 +52,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait" />
+        <activity android:name=".slide.SlidePagerActivity"
+            android:theme="@style/AppTheme.NoActionBar.Fullscreen"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

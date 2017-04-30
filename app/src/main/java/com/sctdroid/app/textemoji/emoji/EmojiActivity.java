@@ -1,13 +1,14 @@
 package com.sctdroid.app.textemoji.emoji;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.sctdroid.app.textemoji.R;
-import com.sctdroid.app.textemoji.data.source.ChatsRepository;
 import com.sctdroid.app.textemoji.data.source.ChatsLoader;
+import com.sctdroid.app.textemoji.data.source.ChatsRepository;
 import com.sctdroid.app.textemoji.data.source.EmojiLoader;
 import com.sctdroid.app.textemoji.data.source.EmojiRepository;
 import com.sctdroid.app.textemoji.data.source.MeLoader;
@@ -15,12 +16,15 @@ import com.sctdroid.app.textemoji.data.source.MeRepository;
 import com.sctdroid.app.textemoji.data.source.local.ChatsLocalDataSource;
 import com.sctdroid.app.textemoji.data.source.local.EmojiLocalDataSource;
 import com.sctdroid.app.textemoji.data.source.local.MeLocalDataSource;
+import com.sctdroid.app.textemoji.slide.SlidePagerActivity;
 import com.sctdroid.app.textemoji.utils.ActivityUtils;
 import com.sctdroid.app.textemoji.utils.Constants;
 import com.sctdroid.app.textemoji.utils.SharePreferencesUtils;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.utils.compact.Compact;
+
+import java.util.ArrayList;
 
 import cn.sharesdk.framework.ShareSDK;
 
@@ -68,7 +72,28 @@ public class EmojiActivity extends AppCompatActivity {
         EmojiLoader emojiLoader = new EmojiLoader(this, emojiRepository);
         mEmojiPresenter = new EmojiPresenter(emojiLoader, meLoader, chatsLoader, getSupportLoaderManager(), repository, mEmojiFragment);
         mEmojiPresenter.isFirstTime(isFirstTimeStart);
+
+        if (isFirstTimeStart) {
+            viewPictures();
+        }
     }
+
+    private static final ArrayList<Integer> IMAGES = new ArrayList<>();
+    static {
+            IMAGES.add(R.drawable.indicator_step_1);
+            IMAGES.add(R.drawable.indicator_step_2);
+            IMAGES.add(R.drawable.indicator_step_3);
+            IMAGES.add(R.drawable.indicator_step_4);
+            IMAGES.add(R.drawable.indicator_step_5);
+    }
+
+    public void viewPictures() {
+        Intent intent = new Intent(this, SlidePagerActivity.class);
+        intent.putExtra(SlidePagerActivity.EXTRA_TITLE, "");
+        intent.putIntegerArrayListExtra(SlidePagerActivity.EXTRA_PICTURES, IMAGES);
+        startActivity(intent);
+    }
+
 
     private long lastPressTime = 0;
 

@@ -26,4 +26,5 @@
     <string name="share_to_wechat_friends_as_emoji">作为表情发送给微信好友</string>
     <string name="saved_toast_format">图片已保存至 %s</string>
     <string name="build_emoji_and_share">生成表情并发送</string>
+    <string name="start_to_use">开始动手</string>
 </resources>
