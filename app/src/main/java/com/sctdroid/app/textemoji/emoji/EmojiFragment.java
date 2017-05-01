@@ -20,6 +20,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,7 +29,6 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,14 +45,13 @@ import com.sctdroid.app.textemoji.utils.EmojiUtils;
 import com.sctdroid.app.textemoji.utils.EncoderUtils;
 import com.sctdroid.app.textemoji.utils.SharePreferencesUtils;
 import com.sctdroid.app.textemoji.utils.SingleFileScanner;
-import com.sctdroid.app.textemoji.utils.SoftKeyboardUtils;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 import com.sctdroid.app.textemoji.utils.ToastUtils;
 import com.sctdroid.app.textemoji.utils.WeixinShareUtils;
+import com.sctdroid.app.textemoji.utils.compact.Compact;
 import com.sctdroid.app.textemoji.views.EmojiCategoryView;
 import com.sctdroid.app.textemoji.views.EmojiTager;
 import com.sctdroid.app.textemoji.views.TextEmoji;
-import com.sctdroid.app.textemoji.views.adaptableviews.RadioAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,6 +167,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         final ImageView switchButton = (ImageView) root.findViewById(R.id.switch_button);
 
         mTextInputEditText = (TextInputEditText) root.findViewById(R.id.text_input);
+        Compact.getInstance().disableShowSoftInput(mTextInputEditText);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,7 +181,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         switchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOptions.getVisibility() != View.VISIBLE) {
+                if (mType != OPTION_TYPE_OPTIONS) {
                     optionShowType(OPTION_TYPE_OPTIONS);
                 } else {
                     optionShowType(OPTION_TYPE_KEYBOARD);
@@ -191,7 +191,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         mEmojiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mEmojiTager.getVisibility() != View.VISIBLE) {
+                if (mType != OPTION_TYPE_EMOJI) {
                     optionShowType(OPTION_TYPE_EMOJI);
                 } else {
                     optionShowType(OPTION_TYPE_KEYBOARD);
@@ -202,7 +202,8 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    if (mOptions.getVisibility() == View.VISIBLE) {
+                    if (mType == OPTION_TYPE_NONE ||
+                            mType == OPTION_TYPE_OPTIONS) {
                         optionShowType(OPTION_TYPE_KEYBOARD);
                     }
                 }
@@ -236,16 +237,30 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         mTextInputEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mEmojiTager.getVisibility() == View.VISIBLE) {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(mTextInputEditText.getWindowToken(), 0);
+                if (mType == OPTION_TYPE_NONE || mType == OPTION_TYPE_OPTIONS) {
+                    optionShowType(OPTION_TYPE_KEYBOARD);
                 }
             }
         });
+        mTextInputEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK
+                        && event.getAction() == KeyEvent.ACTION_UP && mType == OPTION_TYPE_KEYBOARD) {
+                    mTextInputEditText.clearFocus();
+                    mType = OPTION_TYPE_NONE;
+                }
+                return false;
+            }
+        });
+
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                optionShowType(OPTION_TYPE_NONE);
+                if (mType != OPTION_TYPE_NONE) {
+                    optionShowType(OPTION_TYPE_NONE);
+                    return true;
+                }
                 return false;
             }
         });
@@ -340,6 +355,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
     }
 
     private void optionShowType(int type) {
+        mType = type;
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         switch (type) {
             case OPTION_TYPE_NONE:
@@ -492,8 +508,8 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
     }
 
     public boolean onBackPressed() {
-        if (mOptions.getVisibility() == View.VISIBLE
-                || mEmojiTager.getVisibility() == View.VISIBLE) {
+        if (mType == OPTION_TYPE_EMOJI ||
+                mType == OPTION_TYPE_OPTIONS) {
             optionShowType(OPTION_TYPE_NONE);
             return true;
         } else {
