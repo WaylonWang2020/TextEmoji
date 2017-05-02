@@ -38,6 +38,7 @@ android {
         chuizi {}
         wandoujia {}
         mi {}
+        github {}
     }
 
     productFlavors.all {
