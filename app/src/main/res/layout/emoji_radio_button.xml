@@ -8,6 +8,7 @@
     android:button="@null"
     android:layout_gravity="center"
     android:textSize="20sp"
+    android:textColor="#88000000"
     android:gravity="center"
     android:background="@drawable/selector_radio_background"
     />
