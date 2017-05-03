@@ -62,7 +62,7 @@ public class TextEmoji extends View {
         mPaint.setTextAlign(Paint.Align.CENTER);
 
         if (mItem.withShadow) {
-            mPaint.setShadowLayer(textSize/2, 0, 0, Color.parseColor("#ffffff"));
+            mPaint.setShadowLayer(textSize/3, 0, 0, Color.parseColor("#ffffff"));
         }
         mStaticLayout = new StaticLayout(mItem.content, mPaint, DisplayUtils.dp2px(getContext(), WIDTH), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F,true);
         postInvalidate();
