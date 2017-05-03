@@ -32,7 +32,8 @@
 |更新|2017.5.2|
 |开发团队|斯科特安卓|
 |支持系统|Android 4.4 及以上|
-|应用商店||
+|应用商店|锤子应用商店|
 
 ## 下载地址
 - [github release](https://github.com/auv1107/TextEmoji/releases)
+- [锤子应用商店](http://s.t.tt/LgePJG?&source=share&version=2)
