@@ -29,4 +29,4 @@
 |应用商店||
 
 ## 下载地址
-- [github](https://github.com/auv1107/TextEmoji/releases/download/v1.0/app-github-release.apk)
+- [github release](https://github.com/auv1107/TextEmoji/releases)
