@@ -37,3 +37,4 @@
 ## 下载地址
 - [github release](https://github.com/auv1107/TextEmoji/releases)
 - [锤子应用商店](http://s.t.tt/LgePJG?&source=share&version=2)
+- [应用宝](http://a.app.qq.com/o/simple.jsp?pkgname=com.sctdroid.app.textemoji)
