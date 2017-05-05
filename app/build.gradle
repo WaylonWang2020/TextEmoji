@@ -39,15 +39,27 @@ android {
         wandoujia {}
         mi {}
         github {}
+        googleplay {}
     }
 
-    productFlavors.all {
-        flavor -> flavor.manifestPlaceholders = [Your_channel_id: name]
+    productFlavors.all { flavor ->
+        if (name.contains('googleplay')) {
+            flavor.manifestPlaceholders = [Your_channel_id: 'play.google.com']
+        } else {
+            flavor.manifestPlaceholders = [Your_channel_id: name]
+        }
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(excludes: ['GP_*.jar', 'TalkingData*.jar'], include: ['*.jar'], dir: 'libs')
+    googleplayCompile files('libs/GP_TalkingData_Analytics_Android_SDK_V2.2.37.jar')
+    yingyongbaoCompile files('libs/TalkingData_AppAnalytics_Android_SDK_V2.3.62.jar')
+    _360Compile files('libs/TalkingData_AppAnalytics_Android_SDK_V2.3.62.jar')
+    chuiziCompile files('libs/TalkingData_AppAnalytics_Android_SDK_V2.3.62.jar')
+    wandoujiaCompile files('libs/TalkingData_AppAnalytics_Android_SDK_V2.3.62.jar')
+    miCompile files('libs/TalkingData_AppAnalytics_Android_SDK_V2.3.62.jar')
+    githubCompile files('libs/TalkingData_AppAnalytics_Android_SDK_V2.3.62.jar')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

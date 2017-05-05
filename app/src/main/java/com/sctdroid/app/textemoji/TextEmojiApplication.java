@@ -13,6 +13,6 @@ public class TextEmojiApplication extends Application {
         super.onCreate();
         TCAgent.init(this);
         TCAgent.setReportUncaughtExceptions(true);
-        TCAgent.setAntiCheatingEnabled(this, true);
+//        TCAgent.setAntiCheatingEnabled(this, true);
     }
 }
