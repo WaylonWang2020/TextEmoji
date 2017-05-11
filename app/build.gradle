@@ -15,9 +15,9 @@ android {
     signingConfigs {
         sctdroid {
             keyAlias 'SctDroidKey'
-            keyPassword KEY_PASSWORD
+            keyPassword project.hasProperty("KEY_PASSWORD") ? KEY_PASSWORD : System.getenv("KEY_PASSWORD")
             storeFile file('../sctdroid.jks')
-            storePassword KEYSTORE_PASSWORD
+            storePassword project.hasProperty("KEYSTORE_PASSWORD") ? KEYSTORE_PASSWORD : System.getenv("KEYSTORE_PASSWORD")
         }
     }
 
