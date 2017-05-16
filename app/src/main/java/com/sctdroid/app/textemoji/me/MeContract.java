@@ -11,7 +11,7 @@ import com.sctdroid.app.textemoji.data.bean.Me;
  */
 
 public class MeContract {
-    interface Presenter extends BasePresenter {
+    public interface Presenter extends BasePresenter {
 
         void updateAvatar(Bitmap bitmap);
     }

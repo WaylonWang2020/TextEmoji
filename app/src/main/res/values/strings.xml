@@ -29,4 +29,5 @@
     <string name="start_to_use">开始动手</string>
     <string name="bitmap_is_empty">没发现图片哦</string>
     <string name="some_things_wrong"><![CDATA[出错啦!~>_<~]]></string>
+    <string name="title_activity_main_tab">MainTabActivity</string>
 </resources>
