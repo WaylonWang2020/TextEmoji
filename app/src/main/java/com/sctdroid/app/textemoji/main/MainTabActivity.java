@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.sctdroid.app.textemoji.CollectFragment;
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.TabLayoutFragmentAdapter;
+import com.sctdroid.app.textemoji.chatlist.ChatListFragment;
 import com.sctdroid.app.textemoji.data.source.ChatsLoader;
 import com.sctdroid.app.textemoji.data.source.ChatsRepository;
 import com.sctdroid.app.textemoji.data.source.EmojiLoader;
@@ -152,10 +153,10 @@ public class MainTabActivity extends AppCompatActivity implements TabLayout.OnTa
         MeLoader loader = new MeLoader(this, merepository);
         MeContract.Presenter presenter = new MePresenter(loader, getSupportLoaderManager(), merepository, fragment);
 
-        mFragments.add(mEmojiFragment);
+        mFragments.add(CollectFragment.newInstance(getString(R.string.item_collect)));
+        mFragments.add(ChatListFragment.newInstance());
+        mFragments.add(CollectFragment.newInstance(getString(R.string.item_collect)));
         mFragments.add(fragment);
-        mFragments.add(CollectFragment.newInstance(getString(R.string.item_collect)));
-        mFragments.add(CollectFragment.newInstance(getString(R.string.item_collect)));
 
     }
 

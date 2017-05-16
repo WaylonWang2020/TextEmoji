@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:cardElevation="1px"
+        app:contentPaddingLeft="16dp"
+        app:contentPaddingRight="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <include layout="@layout/item_chatlist"
+                android:id="@+id/custom_emojis"/>
+
+            <include layout="@layout/item_chatlist"
+                android:id="@+id/feedback"/>
+
+            <include layout="@layout/item_chatlist"
+                android:id="@+id/favourite"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</FrameLayout>

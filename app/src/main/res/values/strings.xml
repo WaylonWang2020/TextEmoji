@@ -30,4 +30,10 @@
     <string name="bitmap_is_empty">没发现图片哦</string>
     <string name="some_things_wrong"><![CDATA[出错啦!~>_<~]]></string>
     <string name="title_activity_main_tab">MainTabActivity</string>
+    <string name="custom_emojis">我的表情包</string>
+    <string name="my_emojis">我制作的表情包</string>
+    <string name="feedback">和 xx 作者聊天</string>
+    <string name="favourite">我收藏的表情</string>
+    <string name="history_with_developer">我和作者的聊天记录</string>
+    <string name="good_things_here">这里面都是好东西哦</string>
 </resources>
