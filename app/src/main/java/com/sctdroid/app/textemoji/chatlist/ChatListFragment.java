@@ -1,10 +1,8 @@
 package com.sctdroid.app.textemoji.chatlist;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.emoji.EmojiActivity;
-import com.sctdroid.app.textemoji.utils.ActivityUtils;
 
 /**
  * Created by lixindong on 5/16/17.
