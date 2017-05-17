@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sctdroid.app.textemoji.MainActivity"
     tools:showIn="@layout/activity_main_tab">
@@ -24,7 +25,9 @@
         app:tabIndicatorHeight="0dp"
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextAppearance="@style/tabTextSizeStyle"
-        app:tabTextColor="@color/black_1" />
+        app:tabTextColor="@color/black_1"
+        android:elevation="64dp"
+        />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"

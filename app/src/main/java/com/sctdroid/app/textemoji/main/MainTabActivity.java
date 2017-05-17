@@ -36,6 +36,8 @@ import com.sctdroid.app.textemoji.jokes.JokePresenter;
 import com.sctdroid.app.textemoji.me.MeContract;
 import com.sctdroid.app.textemoji.me.MeFragment;
 import com.sctdroid.app.textemoji.me.MePresenter;
+import com.sctdroid.app.textemoji.soogif.SooGifFragment;
+import com.sctdroid.app.textemoji.soogif.SooGifPresenter;
 import com.sctdroid.app.textemoji.utils.Constants;
 import com.sctdroid.app.textemoji.utils.SharePreferencesUtils;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
@@ -123,11 +125,30 @@ public class MainTabActivity extends AppCompatActivity implements TabLayout.OnTa
     public void initFragmentList() {
         mFragments.clear();
 
+        mFragments.add(CollectFragment.newInstance(getString(R.string.item_collect)));
+        mFragments.add(ChatListFragment.newInstance());
+        mFragments.add(getSooGifFragment());
+        mFragments.add(getMeFragment());
+
+    }
+
+    private MeFragment getMeFragment() {
+        /* Me Fragment */
+        MeFragment fragment = MeFragment.newInstance();
+
+        MeRepository merepository = MeRepository.getInstance(new MeLocalDataSource(this), null);
+        MeLoader loader = new MeLoader(this, merepository);
+        MeContract.Presenter presenter = new MePresenter(loader, getSupportLoaderManager(), merepository, fragment);
+
+        return fragment;
+    }
+
+    private EmojiFragment getEmojiFragment() {
         /* Emoji Fragment */
         boolean isFirstTimeStart = SharePreferencesUtils.isFirstTimeStart(this);
         SharePreferencesUtils.applyFirstTimeStart(this, false);
 
-        EmojiFragment mEmojiFragment = EmojiFragment.newInstance();
+        EmojiFragment emojiFragment = EmojiFragment.newInstance();
 
         ChatsRepository repository = ChatsRepository.getInstance(new ChatsLocalDataSource(this), null);
         ChatsLoader chatsLoader = new ChatsLoader(this, repository);
@@ -137,22 +158,19 @@ public class MainTabActivity extends AppCompatActivity implements TabLayout.OnTa
         EmojiLoader emojiLoader = new EmojiLoader(this, emojiRepository);
         GifRepository gifRepository = GifRepository.getInstance(null, new GifRemoteDataSource());
         GifsLoader gifsLoader = new GifsLoader(this, gifRepository);
-        EmojiPresenter mEmojiPresenter = new EmojiPresenter(emojiLoader, meLoader, chatsLoader, gifsLoader, getSupportLoaderManager(), repository, gifRepository, mEmojiFragment);
+        EmojiPresenter mEmojiPresenter = new EmojiPresenter(emojiLoader, meLoader, chatsLoader, gifsLoader, getSupportLoaderManager(), repository, gifRepository, emojiFragment);
         mEmojiPresenter.isFirstTime(isFirstTimeStart);
 
+        return emojiFragment;
+    }
 
-        /* Me Fragment */
-        MeFragment fragment = MeFragment.newInstance();
+    private SooGifFragment getSooGifFragment() {
+        SooGifFragment fragment = SooGifFragment.newInstance();
+        GifRepository repository = GifRepository.getInstance(null, new GifRemoteDataSource());
+        GifsLoader loader = new GifsLoader(this, repository);
+        SooGifPresenter presenter = new SooGifPresenter(getSupportLoaderManager(), loader, repository, fragment);
 
-        MeRepository merepository = MeRepository.getInstance(new MeLocalDataSource(this), null);
-        MeLoader loader = new MeLoader(this, merepository);
-        MeContract.Presenter presenter = new MePresenter(loader, getSupportLoaderManager(), merepository, fragment);
-
-        mFragments.add(CollectFragment.newInstance(getString(R.string.item_collect)));
-        mFragments.add(ChatListFragment.newInstance());
-        mFragments.add(CollectFragment.newInstance(getString(R.string.item_collect)));
-        mFragments.add(fragment);
-
+        return fragment;
     }
 
     /**
