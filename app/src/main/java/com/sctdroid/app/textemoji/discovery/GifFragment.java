@@ -5,17 +5,22 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sctdroid.app.textemoji.R;
 import com.sctdroid.app.textemoji.data.bean.Gif;
+import com.sctdroid.app.textemoji.utils.ToastUtils;
+import com.sctdroid.app.textemoji.views.OnItemTouchListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,6 +89,22 @@ public class GifFragment extends Fragment implements GifContract.View {
             @Override
             public void onRefresh() {
                 mPresenter.query(mKeyword);
+            }
+        });
+
+        recyclerView.addOnItemTouchListener(new OnItemTouchListener(recyclerView) {
+            @Override
+            public void onItemClick(RecyclerView.ViewHolder vh) {
+                ToastUtils.show(getActivity(), "onItemClick", Toast.LENGTH_SHORT);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setView(R.layout.dialog_share);
+                AlertDialog dialog = builder.create();
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.show();
+            }
+
+            @Override
+            public void onItemLongClick(RecyclerView.ViewHolder vh) {
+                ToastUtils.show(getActivity(), "onItemLongClick", Toast.LENGTH_SHORT);
             }
         });
     }
