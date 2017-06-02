@@ -51,7 +51,7 @@ public class SearchableActivity extends AppCompatActivity {
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), fragment, R.id.contentFrame);
         }
-        GifRepository repository = GifRepository.getInstance(null, new SooGifRemoteDataSource());
+        GifRepository repository = GifRepository.getInstance(null, new SooGifRemoteDataSource(this));
         GifsLoader loader = new GifsLoader(this, repository);
         GifPresenter presenter = new GifPresenter(fragment, getSupportLoaderManager(), loader, repository);
     }

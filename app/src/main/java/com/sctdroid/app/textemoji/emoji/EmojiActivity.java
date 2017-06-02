@@ -77,7 +77,7 @@ public class EmojiActivity extends AppCompatActivity {
         MeLoader meLoader = new MeLoader(this, meRepository);
         EmojiRepository emojiRepository = EmojiRepository.getInstance(new EmojiLocalDataSource(this), null);
         EmojiLoader emojiLoader = new EmojiLoader(this, emojiRepository);
-        GifRepository gifRepository = GifRepository.getInstance(null, new SooGifRemoteDataSource());
+        GifRepository gifRepository = GifRepository.getInstance(null, new SooGifRemoteDataSource(this));
         GifsLoader gifsLoader = new GifsLoader(this, gifRepository);
         mEmojiPresenter = new EmojiPresenter(emojiLoader, meLoader, chatsLoader, gifsLoader, getSupportLoaderManager(), repository, gifRepository, mEmojiFragment);
         mEmojiPresenter.isFirstTime(isFirstTimeStart);
