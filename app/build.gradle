@@ -48,6 +48,8 @@ android {
         } else {
             flavor.manifestPlaceholders = [Your_channel_id: name]
         }
+        flavor.manifestPlaceholders.put('TENOR_API_KEY', project.hasProperty("TENOR_API_KEY") ? TENOR_API_KEY : System.getenv("TENOR_API_KEY"))
+        flavor.manifestPlaceholders.put('SOOGIF_SALT', project.hasProperty("SOOGIF_SALT") ? SOOGIF_SALT : System.getenv("SOOGIF_SALT"))
     }
 }
 

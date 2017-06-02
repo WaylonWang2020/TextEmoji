@@ -1,5 +1,8 @@
 package com.sctdroid.app.textemoji.data.source.remote;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,6 +12,7 @@ import com.sctdroid.app.textemoji.data.QueryFilter;
 import com.sctdroid.app.textemoji.data.bean.Gif;
 import com.sctdroid.app.textemoji.data.response.TenorGifResponse;
 import com.sctdroid.app.textemoji.data.source.GifDataSource;
+import com.sctdroid.app.textemoji.utils.MetaUtils;
 import com.sctdroid.app.textemoji.utils.network.HttpGetData;
 
 import org.json.JSONArray;
@@ -26,12 +30,17 @@ import java.util.List;
 
 public class TenorGifRemoteDataSource implements GifDataSource {
     private static final String REQUEST_URL = "https://api.tenor.co/v1/search";
-    private static final String KEY = "WKJGV2F6KCBA";
+    private static String KEY = "";
     private static final String LOCALE = "zh_CN";
 
     public static final String KEY_POS = "pos";
     public static final String KEY_LIMIT = "limit";
     public static final String KEY_TEXT = "tag";
+
+    public TenorGifRemoteDataSource(Context context) {
+        super();
+        KEY = MetaUtils.getMetaData(context, "TENOR_API_KEY");
+    }
 
     @Override
     public void refreshGifs() {

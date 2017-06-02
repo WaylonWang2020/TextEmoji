@@ -1,5 +1,8 @@
 package com.sctdroid.app.textemoji.data.source.remote;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import com.sctdroid.app.textemoji.data.QueryFilter;
@@ -7,6 +10,7 @@ import com.sctdroid.app.textemoji.data.bean.Gif;
 import com.sctdroid.app.textemoji.data.response.SooGifResponse;
 import com.sctdroid.app.textemoji.data.source.GifDataSource;
 import com.sctdroid.app.textemoji.utils.EncoderUtils;
+import com.sctdroid.app.textemoji.utils.MetaUtils;
 import com.sctdroid.app.textemoji.utils.network.HttpGetData;
 
 import org.json.JSONArray;
@@ -24,11 +28,16 @@ import java.util.List;
 public class SooGifRemoteDataSource implements GifDataSource {
     private static final String REQUEST_URL = "http://napi.soogif.com/oapi/backend/image/search";
     private static final String SCOPE = "zimo";
-    private static final String SALT = "5cb470314206c227b56091a399f871df";
+    private static String SALT = "";
 
     public static final String KEY_TAG = "text";
     public static final String KEY_PAGE_NUMBER = "pageNumber";
     public static final String KEY_PAGE_SIZE = "pageSize";
+
+    public SooGifRemoteDataSource(Context context) {
+        super();
+        SALT = MetaUtils.getMetaData(context, "SOOGIF_SALT");
+    }
 
     @Override
     public SooGifResponse getGifs(String tag) {

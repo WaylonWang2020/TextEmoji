@@ -84,6 +84,12 @@
         <meta-data
             android:name="TD_CHANNEL_ID"
             android:value="${Your_channel_id}" />
+        <meta-data
+            android:name="SOOGIF_SALT"
+            android:value="${SOOGIF_SALT}" />
+        <meta-data
+            android:name="TENOR_API_KEY"
+            android:value="${TENOR_API_KEY}" />
 
         <activity
             android:name=".discovery.DiscoveryActivity"
