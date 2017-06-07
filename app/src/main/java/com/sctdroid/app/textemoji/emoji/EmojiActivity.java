@@ -107,7 +107,8 @@ public class EmojiActivity extends AppCompatActivity implements EmojiContract.Co
         mEmojiPresenter.useGifSource(source);
 
         if (isFirstTimeStart) {
-            viewPictures();
+            // disable in alpha mode for bug #74
+            // viewPictures();
         }
 
         initFabAction();
