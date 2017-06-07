@@ -13,6 +13,7 @@ import java.io.File;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
 
 /**
@@ -58,6 +59,15 @@ public class WeixinShareUtils {
         shareParams.setImagePath(path);
 
         Platform platform = ShareSDK.getPlatform(Wechat.NAME);
+        platform.share(shareParams);
+    }
+
+    public static void shareImageToQQ(String path, boolean isBitmap) {
+        Platform.ShareParams shareParams = new Platform.ShareParams();
+        shareParams.setShareType(isBitmap ? Platform.SHARE_IMAGE : Platform.SHARE_EMOJI);
+        shareParams.setImagePath(path);
+
+        Platform platform = ShareSDK.getPlatform(QQ.NAME);
         platform.share(shareParams);
     }
 

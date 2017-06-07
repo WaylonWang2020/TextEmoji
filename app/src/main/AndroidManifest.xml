@@ -116,6 +116,14 @@
             android:theme="@style/Theme.AppCompat.Light">
         </activity>
 
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+
     </application>
 
 </manifest>
