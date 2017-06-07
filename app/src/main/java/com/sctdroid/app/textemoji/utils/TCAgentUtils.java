@@ -116,4 +116,24 @@ public class TCAgentUtils {
     public static void SearchGif(Context context, String query) {
         TCAgent.onEvent(context, Constants.LABEL_SEARCH_GIF, query);
     }
+
+    public static void addToChat(Context context, String tag) {
+        TCAgent.onEvent(context, Constants.EVENT_ADD_GIF_TO_CHAT, tag);
+    }
+
+    public static void search(Context context, String label, int source) {
+        Map<String, String> map = new HashMap<>();
+        map.put("source", source == 0 ? Constants.LABEL_SOOGIF : Constants.LABEL_TENOR);
+        TCAgent.onEvent(context, Constants.EVENT_SEARCH, label, map);
+    }
+
+    public static void useGifSource(Context context, String label, int source) {
+        Map<String, String> map = new HashMap<>();
+        map.put("source", source == 0 ? Constants.LABEL_SOOGIF : Constants.LABEL_TENOR);
+        TCAgent.onEvent(context, Constants.EVENT_USE_GIF_SOURCE, label, map);
+    }
+
+    public static void emojiLongPressed(Context context, String emoji) {
+        TCAgent.onEvent(context, Constants.EVENT_LONG_PRESS_EMOJI, emoji);
+    }
 }

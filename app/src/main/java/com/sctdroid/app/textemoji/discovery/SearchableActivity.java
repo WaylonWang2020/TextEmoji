@@ -14,6 +14,7 @@ import com.sctdroid.app.textemoji.data.source.GifsLoader;
 import com.sctdroid.app.textemoji.data.source.remote.SooGifRemoteDataSource;
 import com.sctdroid.app.textemoji.data.source.remote.TenorGifRemoteDataSource;
 import com.sctdroid.app.textemoji.utils.ActivityUtils;
+import com.sctdroid.app.textemoji.utils.Constants;
 import com.sctdroid.app.textemoji.utils.SharePreferencesUtils;
 import com.sctdroid.app.textemoji.utils.TCAgentUtils;
 
@@ -60,6 +61,7 @@ public class SearchableActivity extends AppCompatActivity {
         } else {
             dataSource = new TenorGifRemoteDataSource(this);
         }
+        TCAgentUtils.search(this, Constants.LABEL_SEARCH_PAGE, source);
         GifRepository repository = GifRepository.getInstance(null, dataSource);
         GifsLoader loader = new GifsLoader(this, repository);
         GifPresenter presenter = new GifPresenter(fragment, getSupportLoaderManager(), loader, repository);

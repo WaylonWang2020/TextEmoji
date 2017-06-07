@@ -82,6 +82,7 @@ public class ShareUtils {
     }
 
     public static void addToChat(Context context, @NonNull Shareable shareable) {
+        TCAgentUtils.addToChat(context, shareable.getTag());
         if (shareable instanceof Gif) {
             Gif gif = (Gif) shareable;
             GifChatItem chatItem = GifChatItem.Builder.newInstance()

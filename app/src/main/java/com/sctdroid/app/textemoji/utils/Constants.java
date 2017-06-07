@@ -13,6 +13,14 @@ public class Constants {
 
     public static final String SHARE_SDK_APPID = "1d52a6fd210ce";
 
+    // config key
+    public static final String KEY_GIF_SORUCE = "KEY_GIF_SORUCE";
+    public static final int GIF_SORUCE_SOOGIF = 0;
+    public static final int GIF_SORUCE_TENOR = 1;
+    public static final String KEY_IS_FIRST_SEE_EMOJI = "KEY_IS_FIRST_SEE_EMOJI";
+
+
+    // Agent constants
     public static final String EVENT_SHARE_TO_FRIEND = "EVENT_SHARE_TO_FRIEND";
     public static final String LABEL_FROM_EMOJI = "LABEL_FROM_EMOJI";
     public static final String LABEL_FROM_SHARE = "LABEL_FROM_SHARE";
@@ -49,10 +57,18 @@ public class Constants {
     public static final String EVENT_SHARE_PLATFORM = "EVENT_SHARE_PLATFORM";
     public static final String LABEL_SEARCH_GIF = "LABEL_SEARCH_GIF";
 
-    // config key
-    public static final String KEY_GIF_SORUCE = "KEY_GIF_SORUCE";
-    public static final int GIF_SORUCE_SOOGIF = 0;
-    public static final int GIF_SORUCE_TENOR = 1;
+    public static final String EVENT_ADD_GIF_TO_CHAT = "EVENT_ADD_GIF_TO_CHAT";
 
-    public static final String KEY_IS_FIRST_SEE_EMOJI = "KEY_IS_FIRST_SEE_EMOJI";
+    public static final String EVENT_SEARCH = "EVENT_SEARCH";
+    public static final String LABEL_SEARCH_PAGE = "LABEL_SEARCH_PAGE";
+    public static final String LABEL_INSTANT_SEARCH = "LABEL_INSTANT_SEARCH";
+
+    public static final String EVENT_USE_GIF_SOURCE = "EVENT_USE_GIF_SOURCE";
+    public static final String LABEL_TENOR = "LABEL_TENOR";
+    public static final String LABEL_SOOGIF = "LABEL_SOOGIF";
+    public static final String LABEL_OPTIONS = "LABEL_OPTIONS";
+    public static final String LABEL_LONG_PRESS_EMOJI = "LABEL_LONG_PRESS_EMOJI";
+
+    public static final String EVENT_LONG_PRESS_EMOJI = "EVENT_LONG_PRESS_EMOJI";
+
 }

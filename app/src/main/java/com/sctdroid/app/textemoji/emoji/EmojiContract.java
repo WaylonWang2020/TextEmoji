@@ -34,6 +34,8 @@ public class EmojiContract {
 
         void startSearch(String text);
 
+        int getGifSourceId();
+
     }
     interface View extends BaseView<Presenter> {
 

@@ -295,6 +295,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
                     @Override
                     public void run() {
                         mPresenter.instantGifSearch(text);
+                        TCAgentUtils.search(getContext(), Constants.LABEL_INSTANT_SEARCH, mPresenter.getGifSourceId());
                     }
                 };
                 cancenTimerTask();
@@ -391,6 +392,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
         mEmojiPagerAdapter.setOnItemLongClickListener(new EmojiCategoryView.ContentAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClicked(View view, final Emoji emoji) {
+                TCAgentUtils.emojiLongPressed(getContext(), emoji.emoji);
                 AlertDialog dialog = new AlertDialog.Builder(getContext())
                         .setItems(new String[]{getString(R.string.search_emoji, emoji.emoji)}, new DialogInterface.OnClickListener() {
                             @Override
@@ -426,6 +428,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mPresenter.useGifSource(position);
+                TCAgentUtils.useGifSource(getContext(), Constants.LABEL_OPTIONS, position);
             }
 
             @Override
@@ -687,6 +690,7 @@ public class EmojiFragment extends Fragment implements EmojiContract.View, BaseE
                     public void onClick(DialogInterface dialog, int which) {
                         mGifSourceSpinner.setSelection(1);
                         mPresenter.useGifSource(1);
+                        TCAgentUtils.useGifSource(getContext(), Constants.LABEL_LONG_PRESS_EMOJI, 1);
                         dialog.dismiss();
                     }
                 })

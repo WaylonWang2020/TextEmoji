@@ -193,7 +193,7 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
         if (mGifsLoader.isStarted()) {
             mGifsLoader.cancelLoad();
         }
-        if (mGifSource == 0) {
+        if (mGifSourceId == 0) {
             mGifsLoader.setQueryFilter(new SooGifQueryFilter(keyword, 0, 3));
         } else {
             mGifsLoader.setQueryFilter(new TenorGifQueryFilter(keyword, "", "3"));
@@ -212,17 +212,22 @@ public class EmojiPresenter implements EmojiContract.Presenter, LoaderManager.Lo
                         .build());
     }
 
-    private int mGifSource = 0;
+    private int mGifSourceId = 0;
 
     @Override
-    public void useGifSource(int source) {
-        mContractManager.useGifDataSource(source);
-        mGifSource = source;
+    public void useGifSource(int sourceId) {
+        mContractManager.useGifDataSource(sourceId);
+        mGifSourceId = sourceId;
+    }
+
+    @Override
+    public int getGifSourceId() {
+        return mGifSourceId;
     }
 
     @Override
     public void startSearch(String text) {
-        if (mGifSource != 1) {
+        if (mGifSourceId != 1) {
             mEmojiView.showUseTenorSourceDialog();
         } else {
             mContractManager.startSearch(text);
