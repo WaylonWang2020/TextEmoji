@@ -1,7 +1,6 @@
 package com.sctdroid.app.textemoji.businessUtils;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -9,8 +8,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.sctdroid.app.textemoji.R;
-import com.sctdroid.app.textemoji.data.ChatItemFactory;
-import com.sctdroid.app.textemoji.data.bean.ChatItem;
 import com.sctdroid.app.textemoji.data.bean.Gif;
 import com.sctdroid.app.textemoji.data.bean.GifChatItem;
 import com.sctdroid.app.textemoji.data.bean.Shareable;
@@ -66,7 +63,7 @@ public class ShareUtils {
                 WeixinShareUtils.shareImageToWechat(absolutePath, isBitmap);
                 break;
             case QQ:
-                WeixinShareUtils.shareImageToQQ(context, absolutePath);
+                WeixinShareUtils.shareImageToQQ(absolutePath, isBitmap);
                 break;
             case OTHERS:
             default:
