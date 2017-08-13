@@ -90,6 +90,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile ('cn.leancloud.android:avoscloud-feedback:v4.1.0@aar')
     compile ('cn.leancloud.android:avoscloud-sdk:v4.1.0')
+    compile 'com.tencent.sonic:sdk:1.0.0'
 }
 
 def AAVersion = '4.3.1'
