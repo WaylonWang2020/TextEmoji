@@ -91,3 +91,9 @@ dependencies {
     compile ('cn.leancloud.android:avoscloud-feedback:v4.1.0@aar')
     compile ('cn.leancloud.android:avoscloud-sdk:v4.1.0')
 }
+
+def AAVersion = '4.3.1'
+dependencies {
+    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+}

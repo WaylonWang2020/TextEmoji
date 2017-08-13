@@ -71,4 +71,8 @@ public class Constants {
 
     public static final String EVENT_LONG_PRESS_EMOJI = "EVENT_LONG_PRESS_EMOJI";
 
+    public static final int TYPE_TRENDS = 0;
+    public static final int TYPE_STAR = 1;
+    public static final int TYPE_DISCOVERY = 2;
+    public static final int TYPE_ME = 3;
 }

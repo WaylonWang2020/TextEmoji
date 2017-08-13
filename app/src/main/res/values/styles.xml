@@ -33,4 +33,23 @@
             <enum name="fraction" value="1" />
         </attr>
     </declare-styleable>
+
+    <style name="Head1">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#d53f3f3f</item>
+        <item name="android:letterSpacing">0.07</item>
+    </style>
+
+    <style name="Title">
+        <item name="android:textSize">14.5sp</item>
+        <item name="android:textColor">@color/charcoal_grey</item>
+        <item name="android:letterSpacing">0.07</item>
+        <item name="android:lineSpacingExtra">0sp</item>
+    </style>
+
+    <style name="AlbumName">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/charcoal_grey</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
 </resources>
