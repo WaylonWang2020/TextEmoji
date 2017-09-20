@@ -32,6 +32,6 @@ public class TrendsFragment extends Fragment {
     @AfterViews
     void init() {
         SonicEngineHelper helper = new SonicEngineHelper(getContext());
-        helper.start(mWebview, "http://www.baidu.com", null);
+        helper.start(mWebview, "http://antiless.com:8080/#/trends", null);
     }
 }
